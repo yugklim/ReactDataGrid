@@ -1,0 +1,7 @@
+*.exe
+*.dll
+*/bin/
+*/obj/
+*/.idea/
+*/packages/
+*/node_modules/
