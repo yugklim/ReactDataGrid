@@ -17,48 +17,35 @@ namespace ReactDataGridTests
         [Test]
         public void Can_Page_Up_And_Down()
         {
-            IWebElement pageIndicator = LoadStartPage(Driver);
-
             for (int page = 2; page < 8; page++)
             {
                 PageUpElement.Click();
-                TestPageNumber(pageIndicator, page);
+                TestPageNumber(page);
             }
 
             for (int page = 6; page > 0; page--)
             {
                 PageDownElement.Click();
-                TestPageNumber(pageIndicator, page);
+                TestPageNumber(page);
             }
         }
 
         [Test]
         public void Jump_To_The_LastFirst_Page()
         {
-                IWebElement pageIndicator = LoadStartPage(Driver);
-
                 PageLastElement.Click();
 
-                TestPageNumber(pageIndicator, 7);
+                TestPageNumber(7);
 
                 PageFirstElement.Click();
 
-                TestPageNumber(pageIndicator, 1);
+                TestPageNumber(1);
         }
 
-        protected IWebElement LoadStartPage(IWebDriver driver)
+        protected void TestPageNumber(int page)
         {
-            driver.Navigate().GoToUrl(StartUrl);
-            new WebDriverWait(driver, Timeout).Until(ExpectedConditions.ElementExists(By.TagName("table")));
-            IWebElement pageIndicator = driver.ExecuteJavaScript<IWebElement>("return $(':button[value=\"<\"]+span')[0]");
-            Assert.AreEqual(pageIndicator.Text, "1");
-            return pageIndicator;
-        }
-
-        protected void TestPageNumber(IWebElement pageIndicator, int page)
-        {
-            new WebDriverWait(Driver, Timeout).Until(ExpectedConditions.TextToBePresentInElement(pageIndicator, page.ToString()));
-            Assert.AreEqual(page.ToString(), pageIndicator.Text);
+            new WebDriverWait(Driver, Timeout).Until(ExpectedConditions.TextToBePresentInElement(PageIndicator, page.ToString()));
+            Assert.AreEqual(page.ToString(), PageIndicator.Text);
         }
     }
 }

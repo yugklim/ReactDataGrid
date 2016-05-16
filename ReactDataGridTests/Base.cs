@@ -7,10 +7,11 @@ using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.Extensions;
+using OpenQA.Selenium.Support.UI;
 
 namespace ReactDataGridTests
 {
-    public class Base
+    public class Base : IDisposable
     {
         protected string StartUrl { get; set; }
 
@@ -53,8 +54,20 @@ namespace ReactDataGridTests
             }
         }
 
-        [SetUp]
-        public void Init()
+        protected IWebElement PageIndicator
+        {
+            get
+            {
+                return Driver.ExecuteJavaScript<IWebElement>("return $(':button[value=\"<\"]+span')[0]");
+            }
+        }
+
+        protected IWebElement GridCell(int row, int column)
+        {
+            return Driver.ExecuteJavaScript<IWebElement>(string.Format("return $('tr:nth-child({0})>td:nth-child({1})')[0]", row + 1, column + 1));
+        }
+
+        public Base()
         {
             StartUrl = @"http://localhost:22404/ReactDataGridTest";
             DriverPath = @"D:\Selenium_Chrome";
@@ -62,16 +75,35 @@ namespace ReactDataGridTests
             Driver = new ChromeDriver(DriverPath);
         }
 
+        [SetUp]
+        public void Init()
+        {
+            LoadStartPage();
+        }
+
         [TearDown]
         public void Close()
         {
-            Driver.Close();
-            Driver.Dispose();
+           
         }
 
         protected void GoToStartUrl()
         {
             Driver.Navigate().GoToUrl(StartUrl);
+        }
+
+        protected void LoadStartPage()
+        {
+            Driver.Navigate().GoToUrl(StartUrl);
+            new WebDriverWait(Driver, Timeout).Until(ExpectedConditions.ElementExists(By.TagName("table")));
+            Assert.AreEqual(PageIndicator.Text, "1");
+        }
+
+
+        public void Dispose()
+        {
+            Driver.Close();
+            Driver.Dispose();
         }
     }
 }
