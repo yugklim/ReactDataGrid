@@ -26,18 +26,13 @@ var ReactDataGrid = React.createClass({
         };
     },
 
+    // complements the loadParameters with the state.LoadParameters values
     completeLoadParameters: function (loadParameters) {
-
-        //_.extend(loadParameters, this.state.loadParameters,   loadParameters);
-        //return;
-
-        var keys = Object.keys(this.state.loadParameters);
-        for (var i = 0; i < keys.length; ++i){
-            var par = loadParameters[keys[i]];
-            if (par === null || par === undefined){
-                loadParameters[keys[i]] = this.state.loadParameters[keys[i]];
+        _.each(this.state.loadParameters, function(val, key) {
+            if (loadParameters[key] === null || loadParameters[key] === undefined){
+                loadParameters[key] = val;
             }
-        }
+        });
     },
 
     loadDataFromServer: function(loadParameters) {
