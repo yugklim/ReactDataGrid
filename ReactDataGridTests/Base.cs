@@ -62,6 +62,22 @@ namespace ReactDataGridTests
             }
         }
 
+        protected IWebElement IdHeader
+        {
+            get
+            {
+                return Driver.ExecuteJavaScript<IWebElement>("return $('th:nth-child(1)>span')[0]");
+            }
+        }
+
+        protected IWebElement Field0Header
+        {
+            get
+            {
+                return Driver.ExecuteJavaScript<IWebElement>("return $('th:nth-child(2)>span')[0]");
+            }
+        }
+
         protected IWebElement GridCell(int row, int column)
         {
             return Driver.ExecuteJavaScript<IWebElement>(string.Format("return $('tr:nth-child({0})>td:nth-child({1})')[0]", row + 1, column + 1));

@@ -19,15 +19,13 @@ namespace ReactDataGridTests
             IWebElement firstCell = GridCell(0, 0);
             IWebElement secondCell = GridCell(0, 1);
             new WebDriverWait(Driver, Timeout).Until(ExpectedConditions.TextToBePresentInElement(firstCell, "99"));
-            IWebElement idHeader = Driver.ExecuteJavaScript<IWebElement>("return $('th:nth-child(1)>span')[0]");
             
-            idHeader.Click();
+            IdHeader.Click();
             new WebDriverWait(Driver, Timeout).Until(ExpectedConditions.TextToBePresentInElement(firstCell, "1"));
 
             Assert.AreEqual("1", firstCell.Text);
 
-            IWebElement field0Header = Driver.ExecuteJavaScript<IWebElement>("return $('th:nth-child(2)>span')[0]");
-            field0Header.Click();
+            Field0Header.Click();
 
             new WebDriverWait(Driver, Timeout).Until(ExpectedConditions.TextToBePresentInElement(secondCell, "Item 99 Field0"));
 
