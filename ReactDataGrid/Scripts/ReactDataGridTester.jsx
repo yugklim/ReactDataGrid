@@ -58,6 +58,7 @@ rdcTesting.reactDataGrid = ReactDOM.render(
         title=""
         noDataMessage="No data"
         url="/Items"
+        reactDataGridClass="reactDataGrid"
         dataRowClickEvent="userClicked"
         loadingId="loadingData"
         idfield="Id"

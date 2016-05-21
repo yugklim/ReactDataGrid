@@ -4,3 +4,5 @@
 */.idea/
 */packages/
 */node_modules/
+*.DotSettings.user
+ReactDataGrid/ReactDataGrid.sln.DotSettings.user

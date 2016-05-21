@@ -220,7 +220,8 @@ var ReactDataGrid = React.createClass({
         var width = (this.props.width)? this.props.width : "";
         this.clearCurrentRow();
 
-        return ( <div className="commentBox" style={{"width":width}}>
+        return ( <div className={this.props.reactDataGridClass} >
+
                 <div ref="spinner" id={this.props.loadingId} className={this.props.spinnerClass}>
                 </div>
                 <h1>{this.props.title}</h1>
@@ -246,6 +247,7 @@ var ReactDataGrid = React.createClass({
 
                 { (isNoData) ? <div ref="noDataMessage">{noDataMessage}</div> :
                 <div>
+
                     <div>
                         <table className={this.props.tableClass}>
                             <thead>
@@ -262,6 +264,7 @@ var ReactDataGrid = React.createClass({
 
                         </table>
                     </div>
+
 
                     <div>
                     <input type="button" value="<<" disabled = {(isFirstPage === true)?"disabled":""}
