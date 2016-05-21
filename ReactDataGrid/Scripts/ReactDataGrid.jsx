@@ -37,6 +37,7 @@ var ReactDataGrid = React.createClass({
 
     loadDataFromServer: function(loadParameters) {
         this.dataLoaded = true;
+        this.loadingHandler();
         this.completeLoadParameters(loadParameters);
         var xhr = new XMLHttpRequest();
         xhr.open('get', this.props.url + '?' + getQueryString(loadParameters), true);
@@ -66,7 +67,6 @@ var ReactDataGrid = React.createClass({
         }.bind(this);
 
         xhr.send();
-        this.loadingHandler();
 
     },
 
@@ -221,11 +221,8 @@ var ReactDataGrid = React.createClass({
         this.clearCurrentRow();
 
         return ( <div className="commentBox" style={{"width":width}}>
-                <div ref="spinner" id={this.props.loadingId} className="spinner-overlay" style={{"display":"block", "margin-top":"30px",
-                "width": spinnerWidth, "margin-left": spinnerLeft}}>
-                    <div className="spinner"></div>
+                <div ref="spinner" id={this.props.loadingId} className={this.props.spinnerClass}>
                 </div>
-
                 <h1>{this.props.title}</h1>
 
                 <div style={showSearchControls}>

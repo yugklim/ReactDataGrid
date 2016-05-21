@@ -61,6 +61,7 @@ rdcTesting.reactDataGrid = ReactDOM.render(
         dataRowClickEvent="userClicked"
         loadingId="loadingData"
         idfield="Id"
+        spinnerClass="spinner"
         processHeadersRowFunc = {headerTemplate}
         processDataRowFunc = {dataRowTemplate}
         setCurrentRow = {userSetCurrentRow}

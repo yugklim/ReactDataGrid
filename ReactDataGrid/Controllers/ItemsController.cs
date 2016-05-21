@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using ReactDataGrid.Models;
@@ -55,13 +56,14 @@ namespace ReactDataGrid.Controllers
             search = HttpUtility.HtmlEncode(search);
             int nOfItems, nOfPages;
 
-            IEnumerable<ItemModel> offensiveUserModels = GetItems(out nOfItems, out nOfPages, ref page, search, contains, sortBy, sortAsc, itemsOnPage, jumpToId);
+            IEnumerable<ItemModel> itemModels = GetItems(out nOfItems, out nOfPages, ref page, search, contains, sortBy, sortAsc, itemsOnPage, jumpToId);
 
-            itemsGridViewModel.Items = offensiveUserModels;
+            itemsGridViewModel.Items = itemModels;
             itemsGridViewModel.NOfItems = nOfItems;
             itemsGridViewModel.NOfPages = nOfPages;
             itemsGridViewModel.CurrentPage = page;
 
+            Thread.Sleep(3000);
             return Json(itemsGridViewModel, JsonRequestBehavior.AllowGet);
         }
 

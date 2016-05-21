@@ -171,8 +171,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Content Include="Global.asax" />
+    <Content Include="Images\spinner.gif" />
     <Content Include="Scripts\react-dom.js" />
     <Content Include="Scripts\react.js" />
+    <Content Include="Styles\ReactDataGridTest.css" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
