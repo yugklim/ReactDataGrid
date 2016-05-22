@@ -220,10 +220,11 @@ var ReactDataGrid = React.createClass({
         var width = (this.props.width)? this.props.width : "";
         this.clearCurrentRow();
 
-        return ( <div className={this.props.reactDataGridClass} >
+        return ( <div className={this.props.reactDataGridClass}>
 
-                <div ref="spinner" id={this.props.loadingId} className={this.props.spinnerClass}>
+                <div ref="spinner" id={this.props.loadingId}  className={this.props.spinnerClass}>
                 </div>
+
                 <h1>{this.props.title}</h1>
 
                 <div style={showSearchControls}>

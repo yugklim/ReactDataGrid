@@ -13,4 +13,5 @@
 
 .reactDataGrid {
     position: relative;
+    min-height: 64px;
 }
