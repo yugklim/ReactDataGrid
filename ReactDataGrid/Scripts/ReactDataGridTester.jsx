@@ -73,7 +73,6 @@ rdcTesting.reactDataGrid = ReactDOM.render(
             {"header" : "Field1", "data" : "Field1"}
             ]'
         loadErrorHandler = {loadErrorHandler}
-        showSearchControls = "false"
         tableClass="table table-striped"
         filterClass="aml-filters row"
         searchWordClass="col-md-2"

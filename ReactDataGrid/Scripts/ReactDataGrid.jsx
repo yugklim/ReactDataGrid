@@ -227,24 +227,6 @@ var ReactDataGrid = React.createClass({
 
                 <h1>{this.props.title}</h1>
 
-                <div style={showSearchControls}>
-                    Search:
-                    <div className={this.props.filterClass}>
-                        <div className={this.props.searchWordClass}>
-                            <input type="text" onChange={this.search} />
-                        </div>
-                        <div className={this.props.startsClass}>
-                            <input type="radio" name="contains" value="StartsWith" defaultChecked onChange={this.containsChanged} />
-                            <label className="form-field-label">Starts with</label>
-                        </div>
-                        <div className={this.props.containsClass}>
-                            <input type="radio" name="contains" value="Contains" onChange={this.containsChanged} />
-                            <label className="form-field-label">Contains</label>
-                        </div>
-                    </div>
-                </div>
-
-
 
                 { (isNoData) ? <div ref="noDataMessage">{noDataMessage}</div> :
                 <div>
