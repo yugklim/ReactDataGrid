@@ -222,7 +222,7 @@ var ReactDataGrid = React.createClass({
 
         return ( <div className={this.props.reactDataGridClass}>
 
-                <div ref="spinner" id={this.props.loadingId}  className={this.props.spinnerClass}>
+                <div ref="spinner"  className={this.props.spinnerClass}>
                 </div>
 
                 <h1>{this.props.title}</h1>
