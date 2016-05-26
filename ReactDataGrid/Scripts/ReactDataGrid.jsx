@@ -128,11 +128,6 @@ var ReactDataGrid = React.createClass({
         this.loadDataFromServer({sortAsc : sortAsc, sortBy : sortBy, page: 1});
     },
 
-    containsChanged: function(e) {
-        var contains = (e.target.value === "Contains" &&  e.target.checked);
-        this.loadDataFromServer({contains: contains, page: 1});
-    },
-
     goToPage: function(page) {
 
         if (page < 1) {
