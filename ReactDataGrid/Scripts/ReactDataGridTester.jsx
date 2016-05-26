@@ -55,7 +55,6 @@ function loadErrorHandler (xMLHttpRequest) {
 
 rdcTesting.reactDataGrid = ReactDOM.render(
     <ReactDataGrid
-        title=""
         noDataMessage="No data"
         url="/Items"
         reactDataGridClass="reactDataGrid"
@@ -68,10 +67,6 @@ rdcTesting.reactDataGrid = ReactDOM.render(
         loadParameters={{"sortAsc" : false, "sortBy": "Field0", "search" : "", "page" : 1, "contains" : false, "itemsOnPage" : 16, jumpToId : null}}
         loadErrorHandler = {loadErrorHandler}
         tableClass="table table-striped"
-        filterClass="aml-filters row"
-        searchWordClass="col-md-2"
-        startsClass="col-md-1 col-md-offset-1"
-        containsClass="col-md-1"
     />,
 
     document.getElementById('content')

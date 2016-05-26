@@ -225,9 +225,6 @@ var ReactDataGrid = React.createClass({
                 <div ref="spinner"  className={this.props.spinnerClass}>
                 </div>
 
-                <h1>{this.props.title}</h1>
-
-
                 { (isNoData) ? <div ref="noDataMessage">{noDataMessage}</div> :
                 <div>
 
