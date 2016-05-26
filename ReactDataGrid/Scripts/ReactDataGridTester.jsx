@@ -66,11 +66,6 @@ rdcTesting.reactDataGrid = ReactDOM.render(
         processDataRowFunc = {dataRowTemplate}
         setCurrentRow = {userSetCurrentRow}
         loadParameters={{"sortAsc" : false, "sortBy": "Field0", "search" : "", "page" : 1, "contains" : false, "itemsOnPage" : 16, jumpToId : null}}
-        tableStructure='[
-            {"header" : "Id", "data" : "Id"},
-            {"header" : "Field0", "data" : "Field0"},
-            {"header" : "Field1", "data" : "Field1"}
-            ]'
         loadErrorHandler = {loadErrorHandler}
         tableClass="table table-striped"
         filterClass="aml-filters row"
