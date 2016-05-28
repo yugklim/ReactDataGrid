@@ -20,7 +20,7 @@ function headerTemplate()  {
 };
 
 function dataRowTemplate(row, idx) {
-    var tr = <tr ref={"row" + row['Id']}  key={idx} id={row['Id']} onClick={rowClicked}
+    var tr = <tr ref={"row" + row['Id']}  key={idx} id={row['Id']} onClick={onRowClicked}
                  style={{"cursor":"pointer"}}
                  >
         <td>{row['Id']}</td>
@@ -38,12 +38,12 @@ function dataRowTemplate(row, idx) {
     return tr;
 };
 
-function rowClicked (e) {
+function onRowClicked (e) {
         rdcTesting.reactDataGrid.jumpToId = $(e.currentTarget).attr('id');
-        userSetCurrentRow(e.currentTarget);
+        highlightSelectedRow(e.currentTarget);
 };
 
-function userSetCurrentRow(row) {
+function highlightSelectedRow(row) {
     if (rdcTesting.reactDataGrid.currentRow) {
         $(rdcTesting.reactDataGrid.currentRow).toggleClass("selected");
     }
@@ -71,7 +71,7 @@ rdcTesting.reactDataGrid = ReactDOM.render(
         spinnerClass="spinner"
         processHeadersRowFunc = {headerTemplate}
         processDataRowFunc = {dataRowTemplate}
-        setCurrentRow = {userSetCurrentRow}
+        setCurrentRow = {highlightSelectedRow}
         loadParameters={{"sortAsc" : false, "sortBy": "Field0", "search" : "", "page" : 1, "contains" : false, "itemsOnPage" : 16, jumpToId : null}}
         loadErrorHandler = {loadErrorHandler}
         tableClass="table table-striped"
