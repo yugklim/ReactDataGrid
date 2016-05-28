@@ -7,7 +7,7 @@ function sortHeader (header, sortBy) {
         : "") + '</span>';
 };
 
-function headerTemplate() {
+function headerTemplate()  {
     var idHeader = sortHeader.call(this, "Id", "Id");
     var field0Header = sortHeader.call(this, "Field 0", "Field0");
     return <tr>
@@ -20,7 +20,7 @@ function headerTemplate() {
 };
 
 function dataRowTemplate(row, idx) {
-    var tr = <tr ref={"row" + row['Id']}  key={idx} id={row['Id']}
+    var tr = <tr ref={"row" + row['Id']}  key={idx} id={row['Id']} onClick={rowClicked}
                  style={{"cursor":"pointer"}}
                  >
         <td>{row['Id']}</td>
@@ -38,13 +38,21 @@ function dataRowTemplate(row, idx) {
     return tr;
 };
 
+function rowClicked (e) {
+        rdcTesting.reactDataGrid.jumpToId = e.currentTarget.getAttribute('id');
+        userSetCurrentRow(rdcTesting.reactDataGrid.jumpToId, e.currentTarget);
+};
+
 function userSetCurrentRow(id, row) {
-    rdcTesting.reactDataGrid.clearCurrentRow();
+    if (rdcTesting.reactDataGrid.currentRow) {
+        rdcTesting.reactDataGrid.currentRow.className = "";
+    }
+
     if (row) {
         rdcTesting.reactDataGrid.currentRow = row;
         rdcTesting.reactDataGrid.currentRow.className = "selected";
     }
-    rdcTesting.reactDataGrid.ownDataRowClickHandler(id);
+
     //PubSub.publish(rdcTesting.reactDataGrid.props.dataRowClickEvent, id);
 };
 
