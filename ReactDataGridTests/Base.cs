@@ -28,8 +28,7 @@ namespace ReactDataGridTests
                 return Driver.ExecuteJavaScript<IWebElement>("return $(':button[value=\"<<\"]')[0]");
             }
         }
-
-
+        
         protected IWebElement PageDownElement
         {
             get
@@ -81,6 +80,11 @@ namespace ReactDataGridTests
         protected IWebElement GridCell(int row, int column)
         {
             return Driver.ExecuteJavaScript<IWebElement>(string.Format("return $('tr:nth-child({0})>td:nth-child({1})')[0]", row + 1, column + 1));
+        }
+
+        protected IWebElement GridRow(int row)
+        {
+            return Driver.ExecuteJavaScript<IWebElement>(string.Format("return $('tr')[{0}]", row + 1));
         }
 
         public Base()
