@@ -39,18 +39,18 @@ function dataRowTemplate(row, idx) {
 };
 
 function rowClicked (e) {
-        rdcTesting.reactDataGrid.jumpToId = e.currentTarget.getAttribute('id');
-        userSetCurrentRow(rdcTesting.reactDataGrid.jumpToId, e.currentTarget);
+        rdcTesting.reactDataGrid.jumpToId = $(e.currentTarget).attr('id');
+        userSetCurrentRow(e.currentTarget);
 };
 
-function userSetCurrentRow(id, row) {
+function userSetCurrentRow(row) {
     if (rdcTesting.reactDataGrid.currentRow) {
-        rdcTesting.reactDataGrid.currentRow.className = "";
+        $(rdcTesting.reactDataGrid.currentRow).toggleClass("selected");
     }
 
     if (row) {
         rdcTesting.reactDataGrid.currentRow = row;
-        rdcTesting.reactDataGrid.currentRow.className = "selected";
+        $(rdcTesting.reactDataGrid.currentRow).toggleClass("selected");
     }
 
     //PubSub.publish(rdcTesting.reactDataGrid.props.dataRowClickEvent, id);
