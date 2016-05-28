@@ -185,12 +185,6 @@ var ReactDataGrid = React.createClass({
         this.loadDataFromServer({search: newProps.search, page: 1});
     },
 
-    //clearCurrentRow: function() {
-    //    if (this.currentRow) {
-    //        this.currentRow.className = "";
-    //    }
-    //},
-
     render: function() {
         var sortAsc = this.state.sortAsc;
         var idField = this.props.idField;
@@ -209,7 +203,6 @@ var ReactDataGrid = React.createClass({
         var spinnerWidth = (this.props.spinnerWidth)? this.props.spinnerWidth : "";
         var spinnerLeft = (this.props.spinnerLeft)? this.props.spinnerLeft : "";
         var width = (this.props.width)? this.props.width : "";
-        //this.clearCurrentRow();
 
         return ( <div className={this.props.reactDataGridClass}>
 
