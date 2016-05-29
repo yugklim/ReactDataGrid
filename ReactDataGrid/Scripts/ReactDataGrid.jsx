@@ -12,7 +12,7 @@
 }
 
 var ReactDataGrid = React.createClass({
-
+// instantiation methods in order:
     getDefaultProps: function() {
         return {
             noDataMessage : "No data"
@@ -24,6 +24,110 @@ var ReactDataGrid = React.createClass({
             data: undefined,
             loadParameters: this.props.loadParameters
         };
+    },
+
+    componentWillMount: function() {
+        if (this.props.eventToSubscribe) {
+            this.pubsub_token = PubSub.subscribe(this.props.eventToSubscribe, function (topic, idx) {
+                if (this.props.outerClickHandler){
+                    this.props.outerClickHandler(idx)
+                }
+            }.bind(this));
+        }
+    },
+
+    render: function() {
+        var sortAsc = this.state.sortAsc;
+        var idField = this.props.idField;
+        var isPagerVisible = (this.state.data && this.state.data.NOfItems > 0) ? {display: 'block'} : {display: 'none'};
+        var processDataRowFunc = this.props.processDataRowFunc.bind(this);
+        var processHeadersRowFunc = this.props.processHeadersRowFunc.bind(this);
+        var isNoData = !this.state.data || !this.state.data.Items || this.state.data.Items.length === 0;
+        var noDataMessage = (this.dataLoaded === true && isNoData) ? this.props.noDataMessage : "";
+        var isFirstPage = true;
+        var isLastPage = true;
+        if (this.state.data) {
+            isFirstPage = (this.state.data.CurrentPage === 1);
+            isLastPage = (this.state.data) ? (this.state.data.CurrentPage === this.state.data.NOfPages) : true;
+        }
+        var spinnerWidth = (this.props.spinnerWidth)? this.props.spinnerWidth : "";
+        var spinnerLeft = (this.props.spinnerLeft)? this.props.spinnerLeft : "";
+        var width = (this.props.width)? this.props.width : "";
+
+        return ( <div className={this.props.reactDataGridClass}>
+
+                <div ref="spinner"  className={this.props.spinnerClass}>
+                </div>
+
+                { (isNoData) ? <div ref="noDataMessage">{noDataMessage}</div> :
+                <div>
+
+                    <div>
+                        <table className={this.props.tableClass}>
+                            <thead>
+                            {
+                                processHeadersRowFunc()
+                                }
+                            </thead>
+
+                            <tbody>
+                            {
+                                this.state.data.Items.map(function (row, idx) { return processDataRowFunc(row, idx); })
+                                }
+                            </tbody>
+
+                        </table>
+                    </div>
+
+
+                    <div>
+                        <input type="button" value="<<" disabled = {(isFirstPage === true)?"disabled":""}
+                               style={(isFirstPage === true)?{"cursor":"default"} : {"cursor":"pointer"}}
+                               onClick={(isFirstPage === true)? undefined : this.goToFirstPage}>
+                        </input>
+                        <input type="button" value="<" disabled = {(isFirstPage === true)?"disabled":""}
+                               style={(isFirstPage === true)?{"cursor":"default"} : {"cursor":"pointer"}}
+                               onClick={(isFirstPage === true)? undefined : this.goToPreviousPage}></input>
+                        <span>{this.state.data.CurrentPage}</span>
+                        <input type="button" value=">"  disabled = {(isLastPage === true)?"disabled":""}
+                               style={(isLastPage === true)?{"cursor":"default"} : {"cursor":"pointer"}}
+                               onClick={(isLastPage === true)? undefined : this.goToNextPage}></input>
+                        <input type="button" value=">>"  disabled = {(isLastPage === true)?"disabled":""}
+                               style={(isLastPage === true)?{"cursor":"default"} : {"cursor":"pointer"}}
+                               onClick={(isLastPage === true)? undefined : this.goToLastPage}></input>
+                    <span>
+                        Page {this.state.data.CurrentPage} of {this.state.data.NOfPages}  ({this.state.data.NOfItems} records)
+                    </span>
+                    </div>
+
+                </div>
+                    }
+            </div>
+        );
+    },
+
+    componentDidMount: function() {
+        if (this.props.noLoadOnDidMount && this.props.noLoadOnDidMount === "true") {
+            return;
+        }
+        this.loadDataFromServer({});
+    },
+/////////////////////////////////
+// Lifetime methods in order:
+    componentWillReceiveProps: function() {
+        return;
+    },
+
+    shouldComponentUpdate: function() {
+        return true;
+    },
+
+    componentWillUpdate: function() {
+        return;
+    },
+
+    componentDidUpdate: function() {
+        return;
     },
 
     // complements the loadParameters with the state.LoadParameters values
@@ -166,15 +270,7 @@ var ReactDataGrid = React.createClass({
         this.goToPage(this.state.data.NOfPages);
     },
 
-    componentWillMount: function() {
-        if (this.props.eventToSubscribe) {
-            this.pubsub_token = PubSub.subscribe(this.props.eventToSubscribe, function (topic, idx) {
-                if (this.props.outerClickHandler){
-                    this.props.outerClickHandler(idx)
-                }
-            }.bind(this));
-        }
-    },
+
 
     processOuterClick: function(idx) {
         this.loadDataFromServer({userId: idx, page: 1, jumpToId: this.jumpToId});
@@ -182,89 +278,7 @@ var ReactDataGrid = React.createClass({
 
     componentWillUnmount: function() {
         PubSub.unsubscribe(this.pubsub_token);
-    },
-
-
-    componentDidMount: function() {
-        if (this.props.noLoadOnDidMount && this.props.noLoadOnDidMount === "true") {
-            return;
-        }
-        this.loadDataFromServer({});
-    },
-
-    search: function(newProps) {
-        this.loadDataFromServer({search: newProps.search, page: 1});
-    },
-
-    render: function() {
-        var sortAsc = this.state.sortAsc;
-        var idField = this.props.idField;
-        var isPagerVisible = (this.state.data && this.state.data.NOfItems > 0) ? {display: 'block'} : {display: 'none'};
-        var showSearchControls = this.props.showSearchControls === "true" ? {display: 'block'} : {display: 'none'};
-        var processDataRowFunc = this.props.processDataRowFunc.bind(this);
-        var processHeadersRowFunc = this.props.processHeadersRowFunc.bind(this);
-        var isNoData = !this.state.data || !this.state.data.Items || this.state.data.Items.length === 0;
-        var noDataMessage = (this.dataLoaded === true && isNoData) ? this.props.noDataMessage : "";
-        var isFirstPage = true;
-        var isLastPage = true;
-        if (this.state.data) {
-            isFirstPage = (this.state.data.CurrentPage === 1);
-            isLastPage = (this.state.data) ? (this.state.data.CurrentPage === this.state.data.NOfPages) : true;
-        }
-        var spinnerWidth = (this.props.spinnerWidth)? this.props.spinnerWidth : "";
-        var spinnerLeft = (this.props.spinnerLeft)? this.props.spinnerLeft : "";
-        var width = (this.props.width)? this.props.width : "";
-
-        return ( <div className={this.props.reactDataGridClass}>
-
-                <div ref="spinner"  className={this.props.spinnerClass}>
-                </div>
-
-                { (isNoData) ? <div ref="noDataMessage">{noDataMessage}</div> :
-                <div>
-
-                    <div>
-                        <table className={this.props.tableClass}>
-                            <thead>
-                            {
-                                processHeadersRowFunc()
-                                }
-                            </thead>
-
-                            <tbody>
-                            {
-                                this.state.data.Items.map(function (row, idx) { return processDataRowFunc(row, idx); })
-                                }
-                            </tbody>
-
-                        </table>
-                    </div>
-
-
-                    <div>
-                    <input type="button" value="<<" disabled = {(isFirstPage === true)?"disabled":""}
-                          style={(isFirstPage === true)?{"cursor":"default"} : {"cursor":"pointer"}}
-                          onClick={(isFirstPage === true)? undefined : this.goToFirstPage}>
-                    </input>
-                    <input type="button" value="<" disabled = {(isFirstPage === true)?"disabled":""}
-                           style={(isFirstPage === true)?{"cursor":"default"} : {"cursor":"pointer"}}
-                           onClick={(isFirstPage === true)? undefined : this.goToPreviousPage}></input>
-                        <span>{this.state.data.CurrentPage}</span>
-                    <input type="button" value=">"  disabled = {(isLastPage === true)?"disabled":""}
-                           style={(isLastPage === true)?{"cursor":"default"} : {"cursor":"pointer"}}
-                           onClick={(isLastPage === true)? undefined : this.goToNextPage}></input>
-                    <input type="button" value=">>"  disabled = {(isLastPage === true)?"disabled":""}
-                           style={(isLastPage === true)?{"cursor":"default"} : {"cursor":"pointer"}}
-                           onClick={(isLastPage === true)? undefined : this.goToLastPage}></input>
-                    <span>
-                        Page {this.state.data.CurrentPage} of {this.state.data.NOfPages}  ({this.state.data.NOfItems} records)
-                    </span>
-                    </div>
-
-                </div>
-                    }
-            </div>
-        );
     }
+
 });
 

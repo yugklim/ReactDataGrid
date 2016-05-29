@@ -63,7 +63,7 @@ namespace ReactDataGrid.Controllers
             itemsGridViewModel.NOfPages = nOfPages;
             itemsGridViewModel.CurrentPage = page;
 
-            Thread.Sleep(1000);
+            Thread.Sleep(500);
             return Json(itemsGridViewModel, JsonRequestBehavior.AllowGet);
         }
 

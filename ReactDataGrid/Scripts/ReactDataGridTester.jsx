@@ -53,11 +53,11 @@ rdcTesting.reactDataGrid = ReactDOM.render(
         processDataRowFunc = {dataRowTemplate}
         noDataMessage="No data"
         reactDataGridClass="reactDataGrid"
+        tableClass="table table-striped"
         spinnerClass="spinner"
         idfield="Id"
         loadParameters={{"sortAsc" : false, "sortBy": "Field0", "search" : "", "page" : 1, "contains" : false, "itemsOnPage" : 16, jumpToId : null}}
         loadErrorHandler = {loadErrorHandler}
-        tableClass="table table-striped"
     />,
 
     document.getElementById('content')
