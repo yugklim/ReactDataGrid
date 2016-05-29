@@ -38,7 +38,7 @@ namespace ReactDataGrid.Controllers
             return string.Format("Item {0} Field{1}", item, field);
         }
 
-        public ActionResult Index(int page, string search, bool contains, string sortBy, bool sortAsc, int itemsOnPage = 10, int? jumpToId = null)
+        public ActionResult Index(int page, string sortBy, bool sortAsc, int itemsOnPage = 10, int? jumpToId = null)
         {
             ItemsGridViewModel itemsGridViewModel = new ItemsGridViewModel()
             {
@@ -53,10 +53,9 @@ namespace ReactDataGrid.Controllers
                 return Json(itemsGridViewModel, JsonRequestBehavior.AllowGet);
             }
 
-            search = HttpUtility.HtmlEncode(search);
             int nOfItems, nOfPages;
 
-            IEnumerable<ItemModel> itemModels = GetItems(out nOfItems, out nOfPages, ref page, search, contains, sortBy, sortAsc, itemsOnPage, jumpToId);
+            IEnumerable<ItemModel> itemModels = GetItems(out nOfItems, out nOfPages, ref page, sortBy, sortAsc, itemsOnPage, jumpToId);
 
             itemsGridViewModel.Items = itemModels;
             itemsGridViewModel.NOfItems = nOfItems;
@@ -67,16 +66,16 @@ namespace ReactDataGrid.Controllers
             return Json(itemsGridViewModel, JsonRequestBehavior.AllowGet);
         }
 
-        public IEnumerable<ItemModel> GetItems(out int nOfItems, out int nOfPages, ref int page, string search, bool contains, string sortBy, bool sortAsc, int itemsOnPage, int? jumpToId)
+        public IEnumerable<ItemModel> GetItems(out int nOfItems, out int nOfPages, ref int page, string sortBy, bool sortAsc, int itemsOnPage, int? jumpToId)
         {
-            if (search == null || page <= 0 || itemsOnPage <= 0)
+            if (page <= 0 || itemsOnPage <= 0)
             {
                 nOfItems = 0;
                 nOfPages = 0;
                 return new List<ItemModel>();
             }
 
-            IQueryable<ItemModel> itemsFound = itemModels.AsQueryable().Where(u => (contains ? u.Field0.Contains(search) : u.Field0.StartsWith(search)));
+            IQueryable<ItemModel> itemsFound = itemModels.AsQueryable();
             IOrderedEnumerable<ItemModel> itemsOrdered;
 
             switch (sortBy)

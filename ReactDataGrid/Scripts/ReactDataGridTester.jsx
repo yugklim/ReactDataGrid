@@ -56,7 +56,7 @@ rdcTesting.reactDataGrid = ReactDOM.render(
         tableClass="table table-striped"
         spinnerClass="spinner"
         idfield="Id"
-        loadParameters={{"sortAsc" : false, "sortBy": "Field0", "search" : "", "page" : 1, "contains" : false, "itemsOnPage" : 16, jumpToId : null}}
+        loadParameters={{"sortAsc" : false, "sortBy": "Field0", "page" : 1, "itemsOnPage" : 16, jumpToId : null}}
         loadErrorHandler = {loadErrorHandler}
     />,
 
