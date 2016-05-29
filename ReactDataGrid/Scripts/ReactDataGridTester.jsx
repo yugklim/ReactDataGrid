@@ -20,9 +20,7 @@ function headerTemplate()  {
 };
 
 function dataRowTemplate(row, idx) {
-    var tr = <tr ref={"row" + row['Id']}  key={idx} id={row['Id']} onClick={onRowClicked}
-                 style={{"cursor":"pointer"}}
-                 >
+    var tr = <tr ref={"row" + row['Id']}  key={idx} id={row['Id']} onClick={onRowClicked} style={{"cursor":"pointer"}}>
         <td>{row['Id']}</td>
         <td>{row['Field0']}</td>
         <td>{row['Field1']}</td>
@@ -40,20 +38,7 @@ function dataRowTemplate(row, idx) {
 
 function onRowClicked (e) {
         rdcTesting.reactDataGrid.jumpToId = $(e.currentTarget).attr('id');
-        highlightSelectedRow(e.currentTarget);
-};
-
-function highlightSelectedRow(row) {
-    if (rdcTesting.reactDataGrid.currentRow) {
-        $(rdcTesting.reactDataGrid.currentRow).toggleClass("selected");
-    }
-
-    if (row) {
-        rdcTesting.reactDataGrid.currentRow = row;
-        $(rdcTesting.reactDataGrid.currentRow).toggleClass("selected");
-    }
-
-    //PubSub.publish(rdcTesting.reactDataGrid.props.dataRowClickEvent, id);
+        rdcTesting.reactDataGrid.highlightSelectedRow(e.currentTarget);
 };
 
 function loadErrorHandler (xMLHttpRequest) {
@@ -63,15 +48,13 @@ function loadErrorHandler (xMLHttpRequest) {
 
 rdcTesting.reactDataGrid = ReactDOM.render(
     <ReactDataGrid
-        noDataMessage="No data"
         url="/Items"
-        reactDataGridClass="reactDataGrid"
-        dataRowClickEvent="userClicked"
-        idfield="Id"
-        spinnerClass="spinner"
         processHeadersRowFunc = {headerTemplate}
         processDataRowFunc = {dataRowTemplate}
-        setCurrentRow = {highlightSelectedRow}
+        noDataMessage="No data"
+        reactDataGridClass="reactDataGrid"
+        spinnerClass="spinner"
+        idfield="Id"
         loadParameters={{"sortAsc" : false, "sortBy": "Field0", "search" : "", "page" : 1, "contains" : false, "itemsOnPage" : 16, jumpToId : null}}
         loadErrorHandler = {loadErrorHandler}
         tableClass="table table-striped"

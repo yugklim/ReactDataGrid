@@ -84,7 +84,18 @@ var ReactDataGrid = React.createClass({
         }
 
         var row = this.refs["row" + this.jumpToId];
-        this.props.setCurrentRow(row);
+        this.highlightSelectedRow(row);
+    },
+
+    highlightSelectedRow: function(row) {
+        if (this.currentRow) {
+            $(this.currentRow).toggleClass("selected");
+        }
+
+        if (row) {
+            this.currentRow = row;
+            $(this.currentRow).toggleClass("selected");
+        }
     },
 
     isIdInData: function(id) {
