@@ -15,11 +15,14 @@ var ReactDataGrid = React.createClass({
 // instantiation methods in order:
     getDefaultProps: function() {
         return {
-            noDataMessage : "No data"
+            noDataMessage : "No data",
+            defaultLoadParameters : {"page" : 1, "itemsOnPage" : 16, jumpToId : null},
+            loadErrorHandler :  this.prototype.loadErrorHandler
         }
     },
 
     getInitialState: function() {
+       _.extend(this.props.loadParameters, this.props.defaultLoadParameters);
         return {
             data: undefined,
             loadParameters: this.props.loadParameters
@@ -129,6 +132,7 @@ var ReactDataGrid = React.createClass({
     componentDidUpdate: function() {
         return;
     },
+////////////////////////////////////
 
     // complements the loadParameters with the state.LoadParameters values
     completeLoadParameters: function (loadParameters) {
@@ -150,6 +154,11 @@ var ReactDataGrid = React.createClass({
         xhr.onload = function() {
             this.loadingFinishedHandler();
             if(xhr.status == 200) {
+
+                if (this.props.loadErrorHandler){
+                    this.props.loadErrorHandler(xhr);
+                }
+
                 var data = JSON.parse(xhr.responseText);
                 this.setState({
                     data: data,
@@ -172,6 +181,10 @@ var ReactDataGrid = React.createClass({
 
         xhr.send();
 
+    },
+
+    loadErrorHandler: function (xMLHttpRequest) {
+        alert("Status: " + (xMLHttpRequest ? xMLHttpRequest.status : "No info") + " " + (xMLHttpRequest ? xMLHttpRequest.statusText : ""));
     },
 
     tryToJumpToId: function() {

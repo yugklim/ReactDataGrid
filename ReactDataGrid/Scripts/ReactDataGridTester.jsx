@@ -41,9 +41,8 @@ function onRowClicked (e) {
         rdcTesting.reactDataGrid.highlightSelectedRow(e.currentTarget);
 };
 
-function loadErrorHandler (xMLHttpRequest) {
-    alert("Status: " + (xMLHttpRequest ? xMLHttpRequest.status : "No info") + " "
-        + (xMLHttpRequest ? xMLHttpRequest.statusText : ""));
+function ownLoadErrorHandler (xMLHttpRequest) {
+    alert("Own Handler ");
 };
 
 rdcTesting.reactDataGrid = ReactDOM.render(
@@ -56,8 +55,8 @@ rdcTesting.reactDataGrid = ReactDOM.render(
         tableClass="table table-striped"
         spinnerClass="spinner"
         idfield="Id"
-        loadParameters={{"sortAsc" : false, "sortBy": "Field0", "page" : 1, "itemsOnPage" : 16, jumpToId : null}}
-        loadErrorHandler = {loadErrorHandler}
+        loadParameters={{"sortAsc" : false, "sortBy": "Field0"}}
+        //loadErrorHandler = {ownLoadErrorHandler}
     />,
 
     document.getElementById('content')
