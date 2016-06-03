@@ -1,16 +1,4 @@
-﻿function getQueryString(loadParameters) {
-    if (!loadParameters) {
-        return "";
-    }
-
-    var retVal = "";
-    var keys = Object.keys(loadParameters);
-    for (var i = 0; i < keys.length; ++i){
-        retVal += keys[i] + '=' + loadParameters[keys[i]] + '&';
-    }
-    return retVal;
-}
-
+﻿
 var ReactDataGrid = React.createClass({
 // instantiation methods in order:
     getDefaultProps: function() {
@@ -148,16 +136,12 @@ var ReactDataGrid = React.createClass({
         this.loadingHandler();
         this.completeLoadParameters(loadParameters);
         var xhr = new XMLHttpRequest();
-        xhr.open('get', this.props.url + '?' + getQueryString(loadParameters), true);
+        xhr.open('get', this.props.url + '?' + this.getQueryString(loadParameters), true);
         xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.onload = function() {
             this.loadingFinishedHandler();
             if(xhr.status == 200) {
-
-                if (this.props.loadErrorHandler){
-                    this.props.loadErrorHandler(xhr);
-                }
 
                 var data = JSON.parse(xhr.responseText);
                 this.setState({
@@ -182,6 +166,19 @@ var ReactDataGrid = React.createClass({
         xhr.send();
 
     },
+
+    getQueryString: function (loadParameters){
+        if (!loadParameters) {
+            return "";
+        }
+        var retVal = "";
+        var keys = Object.keys(loadParameters);
+        for (var i = 0; i < keys.length; ++i){
+            retVal += keys[i] + '=' + loadParameters[keys[i]] + '&';
+        }
+        return retVal;
+    },
+
 
     loadErrorHandler: function (xMLHttpRequest) {
         alert("Status: " + (xMLHttpRequest ? xMLHttpRequest.status : "No info") + " " + (xMLHttpRequest ? xMLHttpRequest.statusText : ""));
