@@ -136,7 +136,7 @@ var ReactDataGrid = React.createClass({
         this.loadingHandler();
         this.completeLoadParameters(loadParameters);
         var xhr = new XMLHttpRequest();
-        xhr.open('get', this.props.url + '?' + this.getQueryString(loadParameters), true);
+        xhr.open('get', this.props.url + '?' + this.buildQueryString(loadParameters), true);
         xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.onload = function() {
@@ -167,7 +167,7 @@ var ReactDataGrid = React.createClass({
 
     },
 
-    getQueryString: function (loadParameters){
+    buildQueryString: function (loadParameters){
         if (!loadParameters) {
             return "";
         }
