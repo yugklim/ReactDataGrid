@@ -120,23 +120,15 @@ var ReactDataGrid = React.createClass({
     componentDidUpdate: function() {
         return;
     },
-////////////////////////////////////
-
-    // complements the loadParameters with the state.LoadParameters values
-    completeLoadParameters: function (loadParameters) {
-        _.each(this.state.loadParameters, function(val, key) {
-            if (loadParameters[key] === null || loadParameters[key] === undefined){
-                loadParameters[key] = val;
-            }
-        });
-    },
 
     loadDataFromServer: function(loadParameters) {
         this.dataLoaded = true;
         this.loadingHandler();
-        this.completeLoadParameters(loadParameters);
+        var cloneOfStateLoadParameters = _.clone(this.state.loadParameters);
+        _.extend(cloneOfStateLoadParameters, loadParameters);
+
         var xhr = new XMLHttpRequest();
-        xhr.open('get', this.props.url + '?' + this.buildQueryString(loadParameters), true);
+        xhr.open('get', this.props.url + '?' + this.buildQueryString(cloneOfStateLoadParameters), true);
         xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.onload = function() {
@@ -146,7 +138,7 @@ var ReactDataGrid = React.createClass({
                 var data = JSON.parse(xhr.responseText);
                 this.setState({
                     data: data,
-                    loadParameters: loadParameters
+                    loadParameters: cloneOfStateLoadParameters
                 });
 
                 this.tryToJumpToId();
