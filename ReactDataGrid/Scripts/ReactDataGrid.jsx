@@ -97,14 +97,19 @@ var ReactDataGrid = React.createClass({
         );
     },
 
+    componentWillUnmount: function() {
+    },
+
     componentDidMount: function() {
         if (this.props.noLoadOnDidMount && this.props.noLoadOnDidMount === "true") {
             return;
         }
         this.loadDataFromServer({});
     },
-/////////////////////////////////
+
+// end of instantiation methods
 // Lifetime methods in order:
+    
     componentWillReceiveProps: function() {
         return;
     },
@@ -120,6 +125,8 @@ var ReactDataGrid = React.createClass({
     componentDidUpdate: function() {
         return;
     },
+
+// end of lifetime methods
 
     loadDataFromServer: function(loadParameters) {
         this.dataLoaded = true;
@@ -270,16 +277,6 @@ var ReactDataGrid = React.createClass({
 
     goToLastPage: function() {
         this.goToPage(this.state.data.NOfPages);
-    },
-
-
-
-    processOuterClick: function(idx) {
-        this.loadDataFromServer({userId: idx, page: 1, jumpToId: this.jumpToId});
-    },
-
-    componentWillUnmount: function() {
-        PubSub.unsubscribe(this.pubsub_token);
     }
 
 });
