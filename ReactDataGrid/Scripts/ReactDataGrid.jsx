@@ -5,7 +5,7 @@ var ReactDataGrid = React.createClass({
         return {
             noDataMessage : "No data",
             defaultLoadParameters : {"page" : 1, "itemsOnPage" : 16, jumpToId : null},
-            loadErrorHandler :  this.prototype.loadErrorHandler
+            loadErrorHandler :  this.prototype.loadErrorHandler,
         }
     },
 
@@ -135,6 +135,7 @@ var ReactDataGrid = React.createClass({
             return retVal;
         };
 
+        this.raiseEvent(this.props.onBeforeLoadData, this.state.loadParameters);
         this.dataLoaded = true;
         this.onLoadStarted();
         var cloneOfStateLoadParameters = _.clone(this.state.loadParameters);
@@ -155,11 +156,13 @@ var ReactDataGrid = React.createClass({
                 });
 
                 this.tryToJumpToId();
+                this.raiseEvent(this.props.onDataLoadedOK, this.state.loadParameters);
             }
             else {
                 if (this.props.loadErrorHandler){
                     this.props.loadErrorHandler(xhr);
                 }
+                this.raiseEvent(this.props.onDataLoadedFault, this.state.loadParameters);
             }
 
         }.bind(this);
@@ -264,7 +267,13 @@ var ReactDataGrid = React.createClass({
 
     goToLastPage: function() {
         this.goToPage(this.state.data.NOfPages);
-    }
+    },
+//////
 
+    raiseEvent: function(eventHandler, eventArgs) {
+        if (eventHandler) {
+            eventHandler(this, eventArgs);
+        }
+    }
 });
 

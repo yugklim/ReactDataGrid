@@ -45,8 +45,19 @@ function ownLoadErrorHandler (xMLHttpRequest) {
     alert("Own Handler ");
 };
 
+function onBeforeLoadData(component, eventArgs) {
+    var x = component;
+    var y = eventArgs;
+}
+
+function onDataLoadedOK(component, eventArgs) {
+    var x = component;
+    var y = eventArgs;
+}
+
 rdcTesting.reactDataGrid = ReactDOM.render(
     <ReactDataGrid
+        // obligatory parameters
         url="/Items"
         processHeadersRowFunc = {headerTemplate}
         processDataRowFunc = {dataRowTemplate}
@@ -56,7 +67,10 @@ rdcTesting.reactDataGrid = ReactDOM.render(
         spinnerClass="spinner"
         idfield="Id"
         loadParameters={{"sortAsc" : false, "sortBy": "Field0"}}
+        // non obligatory parameters
         //loadErrorHandler = {ownLoadErrorHandler}
+        onBeforeLoadData={onBeforeLoadData}
+        onDataLoadedOK={onDataLoadedOK}
     />,
 
     document.getElementById('content')
