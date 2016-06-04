@@ -18,13 +18,6 @@ var ReactDataGrid = React.createClass({
     },
 
     componentWillMount: function() {
-        if (this.props.eventToSubscribe) {
-            this.pubsub_token = PubSub.subscribe(this.props.eventToSubscribe, function (topic, idx) {
-                if (this.props.outerClickHandler){
-                    this.props.outerClickHandler(idx)
-                }
-            }.bind(this));
-        }
     },
 
     render: function() {
@@ -97,9 +90,6 @@ var ReactDataGrid = React.createClass({
         );
     },
 
-    componentWillUnmount: function() {
-    },
-
     componentDidMount: function() {
         if (this.props.noLoadOnDidMount && this.props.noLoadOnDidMount === "true") {
             return;
@@ -109,7 +99,7 @@ var ReactDataGrid = React.createClass({
 
 // end of instantiation methods
 // Lifetime methods in order:
-    
+
     componentWillReceiveProps: function() {
         return;
     },
@@ -126,20 +116,36 @@ var ReactDataGrid = React.createClass({
         return;
     },
 
+    componentWillUnmount: function() {
+    },
+
 // end of lifetime methods
 
     loadDataFromServer: function(loadParameters) {
+
+        var buildQueryString = function (loadParameters){
+            if (!loadParameters) {
+                return "";
+            }
+            var retVal = "";
+            var keys = Object.keys(loadParameters);
+            for (var i = 0; i < keys.length; ++i){
+                retVal += keys[i] + '=' + loadParameters[keys[i]] + '&';
+            }
+            return retVal;
+        };
+
         this.dataLoaded = true;
-        this.loadingHandler();
+        this.onLoadStarted();
         var cloneOfStateLoadParameters = _.clone(this.state.loadParameters);
         _.extend(cloneOfStateLoadParameters, loadParameters);
 
         var xhr = new XMLHttpRequest();
-        xhr.open('get', this.props.url + '?' + this.buildQueryString(cloneOfStateLoadParameters), true);
+        xhr.open('get', this.props.url + '?' + buildQueryString(cloneOfStateLoadParameters), true);
         xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.onload = function() {
-            this.loadingFinishedHandler();
+            this.onLoadFinished();
             if(xhr.status == 200) {
 
                 var data = JSON.parse(xhr.responseText);
@@ -159,25 +165,20 @@ var ReactDataGrid = React.createClass({
         }.bind(this);
 
         xhr.onreadystatechange=function(data) {
-            this.loadingFinishedHandler();
+            this.onLoadFinished();
         }.bind(this);
 
         xhr.send();
 
     },
 
-    buildQueryString: function (loadParameters){
-        if (!loadParameters) {
-            return "";
-        }
-        var retVal = "";
-        var keys = Object.keys(loadParameters);
-        for (var i = 0; i < keys.length; ++i){
-            retVal += keys[i] + '=' + loadParameters[keys[i]] + '&';
-        }
-        return retVal;
+    onLoadStarted: function() {
+        this.refs["spinner"].style.display = "block";
     },
 
+    onLoadFinished: function() {
+        this.refs["spinner"].style.display = "none";
+    },
 
     loadErrorHandler: function (xMLHttpRequest) {
         alert("Status: " + (xMLHttpRequest ? xMLHttpRequest.status : "No info") + " " + (xMLHttpRequest ? xMLHttpRequest.statusText : ""));
@@ -231,16 +232,6 @@ var ReactDataGrid = React.createClass({
 
     refresh: function() {
         this.loadDataFromServer({jumpToId: this.jumpToId});
-    },
-
-    loadingHandler: function() {
-        //this.refs["noDataMessage"].style.display = "none";
-        this.refs["spinner"].style.display = "block";
-    },
-
-    loadingFinishedHandler: function() {
-        //this.refs["noDataMessage"].style.display = "block";
-        this.refs["spinner"].style.display = "none";
     },
 
     sort: function(sortBy) {
