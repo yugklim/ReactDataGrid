@@ -22,6 +22,8 @@
         <div id="content"></div>
         <script src="@Url.Content("~/Scripts/ReactDataGrid.jsx")"></script>
         <script src="@Url.Content("~/Scripts/ReactDataGridTester.jsx")"></script>
-        AAA
+        <br/>
+        <input type="button" value="Go to page 2" id="goTo2NdPageButton" onclick="rdcTesting.reactDataGrid.loadData({ page: 2 })"/>
+        <input type="button" value="Go to page -999" id="goTo-999PageButton" onclick="rdcTesting.reactDataGrid.loadData({page: -999})" />
     </body>
 </html>

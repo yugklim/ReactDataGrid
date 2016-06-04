@@ -87,6 +87,30 @@ namespace ReactDataGridTests
             return Driver.ExecuteJavaScript<IWebElement>(string.Format("return $('tr')[{0}]", row + 1));
         }
 
+        protected IWebElement GoTo2NdPageButton
+        {
+            get
+            {
+                return Driver.ExecuteJavaScript<IWebElement>("return $('#goTo2NdPageButton')[0]");
+            }
+        }
+
+        protected IWebElement GoToMinus999PageButton
+        {
+            get
+            {
+                return Driver.ExecuteJavaScript<IWebElement>("return $('#goTo-999PageButton')[0]");
+            }
+        }
+
+        protected IWebElement NoDataMessageElement
+        {
+            get
+            {
+                return Driver.ExecuteJavaScript<IWebElement>("return $('#noDataMessage')[0]");
+            }
+        }
+
         public Base()
         {
             StartUrl = @"http://localhost:22404/ReactDataGridTest";
@@ -119,6 +143,17 @@ namespace ReactDataGridTests
             Assert.AreEqual(PageIndicator.Text, "1");
         }
 
+        protected void TestPageNumber(int page)
+        {
+            new WebDriverWait(Driver, Timeout).Until(ExpectedConditions.TextToBePresentInElement(PageIndicator, page.ToString()));
+            Assert.AreEqual(page.ToString(), PageIndicator.Text);
+        }
+
+        protected void TestNoDataMessagePresence()
+        {
+            new WebDriverWait(Driver, Timeout).Until(ExpectedConditions.ElementExists(By.Id("noDataMessage")));
+            Assert.IsNotNull(NoDataMessageElement);
+        }
 
         public void Dispose()
         {

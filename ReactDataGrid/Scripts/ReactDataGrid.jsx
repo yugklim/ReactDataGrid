@@ -43,7 +43,7 @@ var ReactDataGrid = React.createClass({
                 <div ref="spinner"  className={this.props.spinnerClass}>
                 </div>
 
-                { (isNoData) ? <div ref="noDataMessage">{noDataMessage}</div> :
+                { (isNoData) ? <div ref="noDataMessage" id="noDataMessage">{noDataMessage}</div> :
                 <div>
 
                     <div>
@@ -94,7 +94,7 @@ var ReactDataGrid = React.createClass({
         if (this.props.noLoadOnDidMount && this.props.noLoadOnDidMount === "true") {
             return;
         }
-        this.loadDataFromServer({});
+        this.loadData({});
     },
 
 // end of instantiation methods
@@ -121,7 +121,7 @@ var ReactDataGrid = React.createClass({
 
 // end of lifetime methods
 
-    loadDataFromServer: function(loadParameters) {
+    loadData: function(loadParameters) {
 
         var buildQueryString = function (loadParameters){
             if (!loadParameters) {
@@ -230,13 +230,9 @@ var ReactDataGrid = React.createClass({
         return false;
     },
 
-    refresh: function() {
-        this.loadDataFromServer({jumpToId: this.jumpToId});
-    },
-
     sort: function(sortBy) {
         var sortAsc = !this.state.loadParameters.sortAsc;
-        this.loadDataFromServer({sortAsc : sortAsc, sortBy : sortBy, page: 1});
+        this.loadData({sortAsc : sortAsc, sortBy : sortBy, page: 1});
     },
 
     goToPage: function(page) {
@@ -251,7 +247,7 @@ var ReactDataGrid = React.createClass({
         }
 
         this.jumpToId = -99;
-        this.loadDataFromServer({page:page, jumpToId: this.jumpToId});
+        this.loadData({page:page, jumpToId: this.jumpToId});
     },
 
     goToNextPage: function() {

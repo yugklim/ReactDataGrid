@@ -41,11 +41,5 @@ namespace ReactDataGridTests
 
                 TestPageNumber(1);
         }
-
-        protected void TestPageNumber(int page)
-        {
-            new WebDriverWait(Driver, Timeout).Until(ExpectedConditions.TextToBePresentInElement(PageIndicator, page.ToString()));
-            Assert.AreEqual(page.ToString(), PageIndicator.Text);
-        }
     }
 }
