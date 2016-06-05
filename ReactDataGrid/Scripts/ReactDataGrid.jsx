@@ -50,7 +50,7 @@ var ReactDataGrid = React.createClass({
 
                             <tbody>
                             {
-                                this.state.data.Items.map(function (row, idx) { return processDataRowFunc(row, idx); })
+                                this.state.data.Items.map(function (row, idx) { return processDataRowFunc( row, idx);})
                                 }
                             </tbody>
 
