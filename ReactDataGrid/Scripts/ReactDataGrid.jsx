@@ -21,9 +21,6 @@ var ReactDataGrid = React.createClass({
     },
 
     render: function() {
-        var sortAsc = this.state.sortAsc;
-        var idField = this.props.idField;
-        var isPagerVisible = (this.state.data && this.state.data.NOfItems > 0) ? {display: 'block'} : {display: 'none'};
         var processDataRowFunc = this.props.processDataRowFunc.bind(this);
         var processHeadersRowFunc = this.props.processHeadersRowFunc.bind(this);
         var isNoData = !this.state.data || !this.state.data.Items || this.state.data.Items.length === 0;
@@ -34,9 +31,6 @@ var ReactDataGrid = React.createClass({
             isFirstPage = (this.state.data.CurrentPage === 1);
             isLastPage = (this.state.data) ? (this.state.data.CurrentPage === this.state.data.NOfPages) : true;
         }
-        var spinnerWidth = (this.props.spinnerWidth)? this.props.spinnerWidth : "";
-        var spinnerLeft = (this.props.spinnerLeft)? this.props.spinnerLeft : "";
-        var width = (this.props.width)? this.props.width : "";
 
         return ( <div className={this.props.reactDataGridClass}>
 
