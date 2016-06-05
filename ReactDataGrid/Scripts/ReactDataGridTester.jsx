@@ -46,13 +46,31 @@ function ownLoadErrorHandler (xMLHttpRequest) {
 };
 
 function onBeforeLoadData(component, eventArgs) {
-    var x = component;
-    var y = eventArgs;
+    rdcTesting.beforeLoadPars = eventArgs;
+    $("#loadParsBeforeLoading").html(loadParsToHtml(rdcTesting.beforeLoadPars, rdcTesting.afterLoadPars));
 }
 
 function onDataLoadedOK(component, eventArgs) {
-    var x = component;
-    var y = eventArgs;
+    rdcTesting.afterLoadPars = eventArgs;
+    $("#loadParsAfterLoading").html(loadParsToHtml(rdcTesting.afterLoadPars, rdcTesting.beforeLoadPars));
+}
+
+function loadParsToHtml(loadPars, parsToCompare) {
+    if (parsToCompare !== undefined && parsToCompare !== null) {
+        return _.reduce(loadPars, function (memo, val, key, list) {
+
+            return memo +
+                ((loadPars[key] === parsToCompare[key]) ?
+                _.template("<div><%= key %>: <%= val %></div>")({key: key, val: val}) :
+                _.template("<div style='color:red'><%= key %>: <%= val %></div>")({key: key, val: val}));
+        }, "");
+    }
+    else
+    {
+        return _.reduce(loadPars, function (memo, val, key, list) {
+            return memo + _.template("<div><%= key %>: <%= val %></div>")({key: key, val: val})
+        }, "");
+    }
 }
 
 rdcTesting.reactDataGrid = ReactDOM.render(
