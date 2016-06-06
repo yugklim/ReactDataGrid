@@ -73,6 +73,62 @@ function loadParsToHtml(loadPars, parsToCompare) {
     }
 }
 
+function x(loadParameters) {
+
+    alert ('I am x!')
+
+    var buildQueryString = function (loadParameters){
+        if (!loadParameters) {
+            return "";
+        }
+        var retVal = "";
+        var keys = Object.keys(loadParameters);
+        for (var i = 0; i < keys.length; ++i){
+            retVal += keys[i] + '=' + loadParameters[keys[i]] + '&';
+        }
+        return retVal;
+    };
+
+    this.raiseEvent(this.props.onBeforeLoadData, this.state.loadParameters);
+    this.dataLoaded = true;
+    this.onLoadStarted();
+    var cloneOfStateLoadParameters = _.clone(this.state.loadParameters);
+    _.extend(cloneOfStateLoadParameters, loadParameters);
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('get', this.props.url + '?' + buildQueryString(cloneOfStateLoadParameters), true);
+    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onload = function() {
+        this.onLoadFinished();
+        if(xhr.status == 200) {
+
+            var data = JSON.parse(xhr.responseText);
+            this.setState({
+                data: data,
+                loadParameters: cloneOfStateLoadParameters
+            });
+
+            this.tryToJumpToId();
+            this.raiseEvent(this.props.onDataLoadedOK, this.state.loadParameters);
+        }
+        else {
+            if (this.props.loadErrorHandler){
+                this.props.loadErrorHandler(xhr);
+            }
+            this.raiseEvent(this.props.onDataLoadedFault, this.state.loadParameters);
+        }
+
+    }.bind(this);
+
+    xhr.onreadystatechange=function(data) {
+        this.onLoadFinished();
+    }.bind(this);
+
+    xhr.send();
+
+    }
+
 rdcTesting.reactDataGrid = ReactDOM.render(
     <ReactDataGrid
         // obligatory parameters
@@ -89,6 +145,7 @@ rdcTesting.reactDataGrid = ReactDOM.render(
         //loadErrorHandler = {ownLoadErrorHandler}
         onBeforeLoadData={onBeforeLoadData}
         onDataLoadedOK={onDataLoadedOK}
+        //loadData={x}
     />,
 
     document.getElementById('content')

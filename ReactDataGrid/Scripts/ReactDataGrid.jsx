@@ -5,7 +5,8 @@ var ReactDataGrid = React.createClass({
         return {
             noDataMessage : "No data",
             defaultLoadParameters : {"page" : 1, "itemsOnPage" : 16, jumpToId : null},
-            loadErrorHandler :  this.prototype.loadErrorHandler,
+            loadData :  this.prototype.loadData,
+            loadErrorHandler :  this.prototype.loadErrorHandler
         }
     },
 
@@ -88,7 +89,7 @@ var ReactDataGrid = React.createClass({
         if (this.props.noLoadOnDidMount && this.props.noLoadOnDidMount === "true") {
             return;
         }
-        this.loadData({});
+        this.props.loadData.call(this,{});
     },
 
 // end of instantiation methods
@@ -229,7 +230,7 @@ var ReactDataGrid = React.createClass({
 
     sort: function(sortBy) {
         var sortAsc = !this.state.loadParameters.sortAsc;
-        this.loadData({sortAsc : sortAsc, sortBy : sortBy, page: 1});
+        this.props.loadData.call(this, {sortAsc : sortAsc, sortBy : sortBy, page: 1});
     },
 
     goToPage: function(page) {
@@ -244,7 +245,7 @@ var ReactDataGrid = React.createClass({
         }
 
         this.jumpToId = -99;
-        this.loadData({page:page, jumpToId: this.jumpToId});
+        this.props.loadData.call(this, {page:page, jumpToId: this.jumpToId});
     },
 
     goToNextPage: function() {
