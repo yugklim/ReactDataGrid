@@ -73,10 +73,7 @@ function loadParsToHtml(loadPars, parsToCompare) {
     }
 }
 
-function x(loadParameters) {
-
-    alert ('I am x!')
-
+function loadViaJquery(loadParameters) {
     var buildQueryString = function (loadParameters){
         if (!loadParameters) {
             return "";
@@ -88,46 +85,37 @@ function x(loadParameters) {
         }
         return retVal;
     };
-
     this.raiseEvent(this.props.onBeforeLoadData, this.state.loadParameters);
     this.dataLoaded = true;
     this.onLoadStarted();
     var cloneOfStateLoadParameters = _.clone(this.state.loadParameters);
     _.extend(cloneOfStateLoadParameters, loadParameters);
 
-    var xhr = new XMLHttpRequest();
-    xhr.open('get', this.props.url + '?' + buildQueryString(cloneOfStateLoadParameters), true);
-    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.onload = function() {
-        this.onLoadFinished();
-        if(xhr.status == 200) {
-
-            var data = JSON.parse(xhr.responseText);
+    $.ajax({
+        type: "GET",
+        url: this.props.url + '?' + buildQueryString(cloneOfStateLoadParameters),
+        dataType: "text",
+        success: function (response)
+        {
+            this.onLoadFinished();
+            var data = JSON.parse(response);
             this.setState({
                 data: data,
                 loadParameters: cloneOfStateLoadParameters
             });
-
             this.tryToJumpToId();
             this.raiseEvent(this.props.onDataLoadedOK, this.state.loadParameters);
-        }
-        else {
+        }.bind(this),
+        error: function ()
+        {
+            this.onLoadFinished();
             if (this.props.loadErrorHandler){
                 this.props.loadErrorHandler(xhr);
             }
             this.raiseEvent(this.props.onDataLoadedFault, this.state.loadParameters);
-        }
-
-    }.bind(this);
-
-    xhr.onreadystatechange=function(data) {
-        this.onLoadFinished();
-    }.bind(this);
-
-    xhr.send();
-
-    }
+        }.bind(this)
+    });
+}
 
 rdcTesting.reactDataGrid = ReactDOM.render(
     <ReactDataGrid
@@ -145,7 +133,7 @@ rdcTesting.reactDataGrid = ReactDOM.render(
         //loadErrorHandler = {ownLoadErrorHandler}
         onBeforeLoadData={onBeforeLoadData}
         onDataLoadedOK={onDataLoadedOK}
-        //loadData={x}
+        loadData={loadViaJquery}
     />,
 
     document.getElementById('content')
