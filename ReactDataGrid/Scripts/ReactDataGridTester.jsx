@@ -124,7 +124,7 @@ rdcTesting.reactDataGrid = ReactDOM.render(
         gridStructure={[{Header: "Id", Field: "Id", Sortable: true},
         {Header: "Field0", Field: "Field0", Sortable: true},
         {Header: "Field1", Field: "Field1", Sortable: true}]}
-        processHeadersRowFunc = {headerTemplate}
+        //processHeadersRowFunc = {headerTemplate}
         //processDataRowFunc = {dataRowTemplate}
         //onRowClicked = {onRowClicked}
         noDataMessage="No data"

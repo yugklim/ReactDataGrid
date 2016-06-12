@@ -8,6 +8,7 @@ var ReactDataGrid = React.createClass({
             loadData :  this.prototype.loadData,
             loadErrorHandler :  this.prototype.loadErrorHandler,
             processDataRowFunc : this.prototype.processDataRowFunc,
+            processHeadersRowFunc : this.prototype.processHeadersRowFunc,
             onRowClicked: this.prototype.onRowClicked
         }
     },
@@ -85,6 +86,22 @@ var ReactDataGrid = React.createClass({
                     }
             </div>
         );
+    },
+
+    sortHeader: function (header, sortBy) {
+        return '<span onclick="rdcTesting.reactDataGrid.sort(\'' + sortBy + '\')">' + header
+            +((this.state.loadParameters.sortBy === sortBy)?
+                ( this.state.loadParameters.sortAsc?'<span>\u2191</span>' : '<span>\u2193</span>')
+                : "") + '</span>';
+    },
+
+    processHeadersRowFunc: function()  {
+        var sortHeader = this.sortHeader;
+        return <tr>
+            {
+                this.props.gridStructure.map(function (val, idx) {return <th key={idx} dangerouslySetInnerHTML={{__html:  sortHeader( val["Header"], val["Field"])}}></th>})
+            }
+        </tr>
     },
 
     processDataRowFunc: function(row, idx) {
