@@ -6,7 +6,9 @@ var ReactDataGrid = React.createClass({
             noDataMessage : "No data",
             defaultLoadParameters : {"page" : 1, "itemsOnPage" : 16, jumpToId : null},
             loadData :  this.prototype.loadData,
-            loadErrorHandler :  this.prototype.loadErrorHandler
+            loadErrorHandler :  this.prototype.loadErrorHandler,
+            processDataRowFunc : this.prototype.processDataRowFunc,
+            onRowClicked: this.prototype.onRowClicked
         }
     },
 
@@ -83,6 +85,32 @@ var ReactDataGrid = React.createClass({
                     }
             </div>
         );
+    },
+
+    processDataRowFunc: function(row, idx) {
+        var onRowClicked = this.props.onRowClicked.bind(this);
+        var tr = <tr ref={"row" + row['Id']}  key={idx} id={row['Id']} onClick={onRowClicked} style={{"cursor":"pointer"}}>
+            {
+                this.props.gridStructure.map(function (val, idx) {return <td key={idx}>{row[val["Field"]]}</td>})
+            }
+           </tr>
+        return tr;
+    },
+
+    onRowClicked: function (e) {
+        this.jumpToId = $(e.currentTarget).attr('id');
+        this.highlightSelectedRow(e.currentTarget);
+    },
+
+    highlightSelectedRow: function(row) {
+        if (this.currentRow) {
+            $(this.currentRow).toggleClass("selected");
+        }
+
+        if (row) {
+            this.currentRow = row;
+            $(this.currentRow).toggleClass("selected");
+        }
     },
 
     componentDidMount: function() {
@@ -197,17 +225,6 @@ var ReactDataGrid = React.createClass({
 
         var row = this.refs["row" + this.jumpToId];
         this.highlightSelectedRow(row);
-    },
-
-    highlightSelectedRow: function(row) {
-        if (this.currentRow) {
-            $(this.currentRow).toggleClass("selected");
-        }
-
-        if (row) {
-            this.currentRow = row;
-            $(this.currentRow).toggleClass("selected");
-        }
     },
 
     isIdInData: function(id) {

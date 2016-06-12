@@ -121,8 +121,12 @@ rdcTesting.reactDataGrid = ReactDOM.render(
     <ReactDataGrid
         // obligatory parameters
         url="/Items"
+        gridStructure={[{Header: "Id", Field: "Id", Sortable: true},
+        {Header: "Field0", Field: "Field0", Sortable: true},
+        {Header: "Field1", Field: "Field1", Sortable: true}]}
         processHeadersRowFunc = {headerTemplate}
-        processDataRowFunc = {dataRowTemplate}
+        //processDataRowFunc = {dataRowTemplate}
+        //onRowClicked = {onRowClicked}
         noDataMessage="No data"
         reactDataGridClass="reactDataGrid"
         tableClass="table table-striped"
