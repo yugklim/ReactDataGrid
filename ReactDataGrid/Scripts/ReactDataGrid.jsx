@@ -99,7 +99,9 @@ var ReactDataGrid = React.createClass({
         var sortHeader = this.sortHeader;
         return <tr>
             {
-                this.props.gridStructure.map(function (val, idx) {return <th key={idx} dangerouslySetInnerHTML={{__html:  sortHeader( val["Header"], val["Field"])}}></th>})
+                this.props.gridStructure.map(function (val, idx) {
+                    return <th key={idx} dangerouslySetInnerHTML={{__html:  val["Sortable"] === true?sortHeader( val["Header"], val["Field"]) : val["Header"]}}></th>
+                    })
             }
         </tr>
     },

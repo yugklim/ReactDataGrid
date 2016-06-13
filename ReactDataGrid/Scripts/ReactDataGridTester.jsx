@@ -121,9 +121,9 @@ rdcTesting.reactDataGrid = ReactDOM.render(
     <ReactDataGrid
         // obligatory parameters
         url="/Items"
-        gridStructure={[{Header: "Id", Field: "Id", Sortable: true},
+        gridStructure={[{Header: "Id", Field: "Id", Sortable: false},
         {Header: "Field0", Field: "Field0", Sortable: true},
-        {Header: "Field1", Field: "Field1", Sortable: true}]}
+        {Header: "Field1", Field: "Field1"}]}
         //processHeadersRowFunc = {headerTemplate}
         //processDataRowFunc = {dataRowTemplate}
         //onRowClicked = {onRowClicked}
@@ -142,5 +142,33 @@ rdcTesting.reactDataGrid = ReactDOM.render(
 
     document.getElementById('content')
 );
+
+rdcTesting.rerender = function() {
+    rdcTesting.reactDataGrid = ReactDOM.render(
+        <ReactDataGrid
+            // obligatory parameters
+            url="/Items"
+            gridStructure={[{Header: "Id", Field: "Id", Sortable: true},
+        {Header: "Header0", Field: "Field0", Sortable: true},
+        {Header: "Field1", Field: "Field1", Sortable: true}]}
+            processHeadersRowFunc = {headerTemplate}
+            processDataRowFunc = {dataRowTemplate}
+            onRowClicked = {onRowClicked}
+            noDataMessage="No data"
+            reactDataGridClass="reactDataGrid"
+            tableClass="table table-striped"
+            spinnerClass="spinner"
+            idfield="Id"
+            loadParameters={{"sortAsc" : false, "sortBy": "Field0"}}
+            // non obligatory parameters
+            //loadErrorHandler = {ownLoadErrorHandler}
+            onBeforeLoadData={onBeforeLoadData}
+            onDataLoadedOK={onDataLoadedOK}
+            loadData={loadViaJquery}
+        />,
+
+        document.getElementById('content')
+    );
+}
 
 }(window.rdcTesting = window.rdcTesting || {}));
