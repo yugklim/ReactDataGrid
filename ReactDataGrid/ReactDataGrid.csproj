@@ -186,6 +186,7 @@
     <Content Include="Scripts\ReactDataGrid.jsx" />
     <Content Include="Scripts\ReactDataGridTester.jsx" />
     <Content Include="Views\ReactDataGridTest\Index.cshtml" />
+    <Content Include="Scripts\Tests\TestSorting.jsx" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

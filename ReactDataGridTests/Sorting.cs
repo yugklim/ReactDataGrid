@@ -31,5 +31,14 @@ namespace ReactDataGridTests
 
             Assert.AreEqual("Item 99 Field0", secondCell.Text);
         }
+
+        [Test]
+        public void Can_Sort_Be_TurnedOff_BySortableFalse()
+        {
+            Driver.ExecuteJavaScript("rdcTesting.renderDefault([{Header: 'Id', Field: 'Id', Sortable: false},{Header: 'Field0', Field: 'Field0', Sortable: true}, {Header: 'Field1', Field: 'Field1'}]);");
+            new WebDriverWait(Driver, Timeout).Until(ExpectedConditions.ElementExists(By.TagName("table")));
+            Assert.AreEqual(PageIndicator.Text, "1");
+        }
     }
 }
+
