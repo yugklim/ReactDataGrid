@@ -41,5 +41,15 @@ namespace ReactDataGridTests
 
                 TestPageNumber(1);
         }
+
+
+        [Test]
+        public void Does_Paging_Work_With_GridDefaultParameters()
+        {
+            Driver.ExecuteJavaScript("rdcTesting.renderDefault([{Header: 'Id', Field: 'Id'},{Header: 'Field0', Field: 'Field0', Sortable: false}, {Header: 'Field1', Field: 'Field1', Sortable: true}]);");
+            new WebDriverWait(Driver, Timeout).Until(ExpectedConditions.ElementExists(By.TagName("table")));
+            Can_Page_Up_And_Down();
+            Jump_To_The_LastFirst_Page();
+        }
     }
 }

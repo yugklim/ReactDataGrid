@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.Extensions;
 using OpenQA.Selenium.Support.UI;
 
 namespace ReactDataGridTests
@@ -35,6 +36,15 @@ namespace ReactDataGridTests
                 new WebDriverWait(Driver, Timeout).Until(ExpectedConditions.TextToBePresentInElement(PageIndicator, page.ToString()));
                 Are_Rows_Selectable_OnTheCurrentPage(page);
             }
+        }
+
+        [Test]
+        public void Does_Select_Work_With_GridDefaultParameters()
+        {
+            Driver.ExecuteJavaScript("rdcTesting.renderDefault([{Header: 'Id', Field: 'Id'},{Header: 'Field0', Field: 'Field0', Sortable: false}, {Header: 'Field1', Field: 'Field1', Sortable: true}]);");
+            new WebDriverWait(Driver, Timeout).Until(ExpectedConditions.ElementExists(By.TagName("table")));
+            Is_First_Row_Selected_When_Loaded();
+            Are_Rows_Selectable_OnAllPages();
         }
 
         private void Are_Rows_Selectable_OnTheCurrentPage(int page)
