@@ -118,7 +118,7 @@ var ReactDataGrid = React.createClass({
     },
 
     onRowClicked: function (e) {
-        this.jumpToId = $(e.currentTarget).attr('id');
+        this.currentId = $(e.currentTarget).attr('id');
         this.highlightSelectedRow(e.currentTarget);
     },
 
@@ -233,20 +233,20 @@ var ReactDataGrid = React.createClass({
 
     tryToJumpToId: function() {
 
-        this.jumpToId  = this.state.loadParameters.jumpToId;
+        this.currentId  = this.state.loadParameters.jumpToId;
 
         try {
-            if (!this.jumpToId || this.jumpToId < 0 || !(this.isIdInData(this.jumpToId))) {
-                this.jumpToId = this.state.data.Items ?
+            if (!this.currentId || this.currentId < 0 || !(this.isIdInData(this.currentId))) {
+                this.currentId = this.state.data.Items ?
                     (this.state.data.Items[0] ?
                         this.state.data.Items[0][this.props.idfield] : -99) : -99;
             }
         }
         catch(e){
-            this.jumpToId = -99;
+            this.currentId = -99;
         }
 
-        var row = this.refs["row" + this.jumpToId];
+        var row = this.refs["row" + this.currentId];
         this.highlightSelectedRow(row);
     },
 
@@ -284,8 +284,8 @@ var ReactDataGrid = React.createClass({
             page = this.state.data.NOfPages;
         }
 
-        this.jumpToId = -99;
-        this.props.loadData.call(this, {page:page, jumpToId: this.jumpToId});
+        this.currentId = -99;
+        this.props.loadData.call(this, {page:page, jumpToId: this.currentId});
     },
 
     goToNextPage: function() {
