@@ -14,6 +14,7 @@ var ReactDataGrid = React.createClass({
     },
 
     getInitialState: function() {
+       _.extend(this.props.defaultLoadParameters, this.props.loadParameters);
        _.extend(this.props.loadParameters, this.props.defaultLoadParameters);
         return {
             data: undefined,
@@ -226,10 +227,13 @@ var ReactDataGrid = React.createClass({
     },
 
     loadErrorHandler: function (xMLHttpRequest) {
-        alert("Status: " + (xMLHttpRequest ? xMLHttpRequest.status : "No info") + " " + (xMLHttpRequest ? xMLHttpRequest.statusText : ""));
+        console.error("Status: " + (xMLHttpRequest ? xMLHttpRequest.status : "No info") + " " + (xMLHttpRequest ? xMLHttpRequest.statusText : ""));
     },
 
+
     tryToJumpToId: function() {
+
+        this.jumpToId  = this.state.loadParameters.jumpToId;
 
         try {
             if (!this.jumpToId || this.jumpToId < 0 || !(this.isIdInData(this.jumpToId))) {

@@ -95,6 +95,11 @@ namespace ReactDataGridTests
             return Driver.ExecuteJavaScript<IWebElement>(string.Format("return $('tr')[{0}]", row + 1));
         }
 
+        protected IWebElement GridRowById(int rowId)
+        {
+            return Driver.ExecuteJavaScript<IWebElement>(string.Format("return $('tr[id={0}]')[0]", rowId));
+        }
+
         protected IWebElement GoTo2NdPageButton
         {
             get
@@ -161,6 +166,13 @@ namespace ReactDataGridTests
         {
             new WebDriverWait(Driver, Timeout).Until(ExpectedConditions.ElementExists(By.Id("noDataMessage")));
             Assert.IsNotNull(NoDataMessageElement);
+        }
+
+        protected bool IsNthRowSelected(int rowIdx)
+        {
+            IWebElement row = GridRowById(rowIdx);
+            IWebElement selectedRow = Driver.FindElement(By.ClassName("selected"));
+            return selectedRow.TagName == row.TagName && selectedRow.Text == row.Text;
         }
 
         public void Dispose()

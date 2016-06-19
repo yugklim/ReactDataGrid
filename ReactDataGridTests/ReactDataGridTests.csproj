@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base.cs" />
+    <Compile Include="JumpToId.cs" />
     <Compile Include="NoData.cs" />
     <Compile Include="OuterEvent.cs" />
     <Compile Include="Paging.cs" />

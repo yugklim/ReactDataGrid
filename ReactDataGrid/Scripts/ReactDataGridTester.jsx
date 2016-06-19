@@ -129,7 +129,7 @@ function loadViaJquery(loadParameters) {
             tableClass="table table-striped"
             spinnerClass="spinner"
             idfield="Id"
-            loadParameters={{"sortAsc" : false, "sortBy": "Field0"}}
+            loadParameters={{"sortAsc" : false, "sortBy": "Field0", "jumpToId": null}}
         />,
 
         document.getElementById('content')
