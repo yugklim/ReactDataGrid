@@ -239,11 +239,11 @@ var ReactDataGrid = React.createClass({
             if (!this.currentId || this.currentId < 0 || !(this.isIdInData(this.currentId))) {
                 this.currentId = this.state.data.Items ?
                     (this.state.data.Items[0] ?
-                        this.state.data.Items[0][this.props.idfield] : -99) : -99;
+                        this.state.data.Items[0][this.props.idfield] : null) : null;
             }
         }
         catch(e){
-            this.currentId = -99;
+            this.currentId = null;
         }
 
         var row = this.refs["row" + this.currentId];
@@ -284,7 +284,7 @@ var ReactDataGrid = React.createClass({
             page = this.state.data.NOfPages;
         }
 
-        this.currentId = -99;
+        this.currentId = null;
         this.props.loadData.call(this, {page:page, jumpToId: this.currentId});
     },
 
