@@ -243,6 +243,7 @@ var ReactDataGrid = React.createClass({
             }
         }
         catch(e){
+            console.error(e.toString());
             this.currentId = null;
         }
 
@@ -251,21 +252,13 @@ var ReactDataGrid = React.createClass({
     },
 
     isIdInData: function(id) {
-
         if (!id || id < 0 || !this.state.data || !this.state.data.Items || this.state.data.Items.length === 0) {
             return false;
         }
 
-        var items = this.state.data.Items;
-        console.log(items);
-        for (var i = 0; i < items.length; ++i) {
-            console.log(items[i]);
-            if (items[i][this.props.idfield] == id) {
-                return true;
-            }
-        }
-
-        return false;
+        return _.some(this.state.data.Items, function(el) {
+            return this.props && this.props.idfield && el[this.props.idfield] === id;
+        });
     },
 
     sort: function(sortBy) {
