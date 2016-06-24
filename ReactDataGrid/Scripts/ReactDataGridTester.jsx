@@ -130,11 +130,13 @@ function loadViaJquery(loadParameters) {
             spinnerClass="spinner"
             idfield="Id"
             loadParameters={{"sortAsc" : false, "sortBy": "Field0", "jumpToId": null}}
+            // not obligatory parameters
+            initialData ={{Items:[{Id:1, Field0: 's'}]}}
         />,
 
         document.getElementById('content')
     );
-
+// http://reactjs.net/getting-started/tutorial.html
 //rdcTesting.rerender = function() {
 //    rdcTesting.reactDataGrid = ReactDOM.render(
 //        <ReactDataGrid

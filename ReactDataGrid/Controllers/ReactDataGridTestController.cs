@@ -14,5 +14,11 @@ namespace ReactDataGrid.Controllers
             return View();
         }
 
+        //public ActionResult RenderOnServer(int page, string sortBy, bool sortAsc, int itemsOnPage = 10, int? jumpToId = null)
+        //{
+
+        //    return View();
+        //}
+
     }
 }

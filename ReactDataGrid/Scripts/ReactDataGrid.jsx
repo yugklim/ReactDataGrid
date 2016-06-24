@@ -17,7 +17,7 @@ var ReactDataGrid = React.createClass({
        _.extend(this.props.defaultLoadParameters, this.props.loadParameters);
        _.extend(this.props.loadParameters, this.props.defaultLoadParameters);
         return {
-            data: undefined,
+            data: this.props.initialData,
             loadParameters: this.props.loadParameters
         };
     },
@@ -137,7 +137,9 @@ var ReactDataGrid = React.createClass({
         if (this.props.noLoadOnDidMount && this.props.noLoadOnDidMount === "true") {
             return;
         }
-        this.props.loadData.call(this,{});
+        if (!this.props.initialData) {
+            this.props.loadData.call(this, {});
+        }
     },
 
 // end of instantiation methods
