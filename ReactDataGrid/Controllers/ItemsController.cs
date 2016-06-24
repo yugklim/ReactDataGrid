@@ -40,6 +40,12 @@ namespace ReactDataGrid.Controllers
 
         public ActionResult Index(int page, string sortBy, bool sortAsc, int itemsOnPage = 10, int? jumpToId = null)
         {
+            Thread.Sleep(500);
+            return Json(GetItemsGridViewModel(page, sortBy, sortAsc, itemsOnPage , jumpToId ), JsonRequestBehavior.AllowGet);
+        }
+
+        public ItemsGridViewModel GetItemsGridViewModel(int page, string sortBy, bool sortAsc, int itemsOnPage = 10, int? jumpToId = null)
+        {
             ItemsGridViewModel itemsGridViewModel = new ItemsGridViewModel()
             {
                 Items = new List<ItemModel>(),
@@ -50,20 +56,16 @@ namespace ReactDataGrid.Controllers
 
             if (page <= 0 || itemsOnPage <= 0)
             {
-                return Json(itemsGridViewModel, JsonRequestBehavior.AllowGet);
+                return itemsGridViewModel;
             }
 
             int nOfItems, nOfPages;
-
             IEnumerable<ItemModel> itemModels = GetItems(out nOfItems, out nOfPages, ref page, sortBy, sortAsc, itemsOnPage, jumpToId);
-
             itemsGridViewModel.Items = itemModels;
             itemsGridViewModel.NOfItems = nOfItems;
             itemsGridViewModel.NOfPages = nOfPages;
             itemsGridViewModel.CurrentPage = page;
-
-            Thread.Sleep(500);
-            return Json(itemsGridViewModel, JsonRequestBehavior.AllowGet);
+            return itemsGridViewModel;
         }
 
         public IEnumerable<ItemModel> GetItems(out int nOfItems, out int nOfPages, ref int page, string sortBy, bool sortAsc, int itemsOnPage, int? jumpToId)

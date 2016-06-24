@@ -131,7 +131,7 @@ function loadViaJquery(loadParameters) {
             idfield="Id"
             loadParameters={{"sortAsc" : false, "sortBy": "Field0", "jumpToId": null}}
             // not obligatory parameters
-            initialData ={{Items:[{Id:1, Field0: 's'}]}}
+            //initialData ={{Items:[{Id:1, Field0: 's'}]}}
         />,
 
         document.getElementById('content')
