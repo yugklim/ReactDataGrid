@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using ReactDataGrid.Models;
+﻿using System.Web.Mvc;
 
 namespace ReactDataGrid.Controllers
 {
@@ -13,12 +8,5 @@ namespace ReactDataGrid.Controllers
         {
             return View();
         }
-
-        //public ActionResult RenderOnServer(int page, string sortBy, bool sortAsc, int itemsOnPage = 10, int? jumpToId = null)
-        //{
-
-        //    return View();
-        //}
-
     }
 }

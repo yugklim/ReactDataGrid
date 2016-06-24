@@ -8,6 +8,10 @@ namespace ReactDataGrid
 	{
 		public static void Configure()
 		{
+            ReactSiteConfiguration.Configuration
+                .AddScript("~/Scripts/underscore-min.js");
+            ReactSiteConfiguration.Configuration
+                .AddScript("~/Scripts/ReactDataGrid.jsx");
 			// If you want to use server-side rendering of React components, 
 			// add all the necessary JavaScript files here. This includes 
 			// your components as well as all of their dependencies.

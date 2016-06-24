@@ -146,6 +146,7 @@
     <Compile Include="BaseGridOperations\BaseGridOperations.cs" />
     <Compile Include="Controllers\ItemsController.cs" />
     <Compile Include="Controllers\ReactDataGridTestController.cs" />
+    <Compile Include="Controllers\RenderOnServerController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -174,6 +175,7 @@
     <Content Include="Images\spinner.gif" />
     <Content Include="Scripts\react-dom.js" />
     <Content Include="Scripts\react.js" />
+    <Content Include="Scripts\underscore-min.js" />
     <Content Include="Styles\ReactDataGridTest.css" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -188,6 +190,7 @@
     <Content Include="Views\ReactDataGridTest\Index.cshtml" />
     <Content Include="Scripts\Tests\TestSorting.jsx" />
     <Content Include="Scripts\Tests\TestJumpToId.jsx" />
+    <Content Include="Views\RenderOnServer\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

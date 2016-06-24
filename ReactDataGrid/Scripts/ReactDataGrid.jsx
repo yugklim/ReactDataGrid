@@ -100,7 +100,7 @@ var ReactDataGrid = React.createClass({
         var sortHeader = this.sortHeader;
         return <tr>
             {
-                this.props.gridStructure.map(function (val, idx) {
+                this.gridStructure().map(function (val, idx) {
                     return <th key={idx} dangerouslySetInnerHTML={{__html:  val["Sortable"] === true?sortHeader( val["Header"], val["Field"]) : val["Header"]}}></th>
                     })
             }
@@ -111,7 +111,7 @@ var ReactDataGrid = React.createClass({
         var onRowClicked = this.props.onRowClicked.bind(this);
         var tr = <tr ref={"row" + row['Id']}  key={idx} id={row['Id']} onClick={onRowClicked} style={{"cursor":"pointer"}}>
             {
-                this.props.gridStructure.map(function (val, idx) {return <td key={idx}>{row[val["Field"]]}</td>})
+                this.gridStructure().map(function (val, idx) {return <td key={idx}>{row[val["Field"]]}</td>})
             }
            </tr>
         return tr;
@@ -299,7 +299,10 @@ var ReactDataGrid = React.createClass({
         this.goToPage(this.state.data.NOfPages);
     },
 //////
-
+    gridStructure: function() {
+        return typeof(this.props.gridStructure) === 'string' ? JSON.parse(this.props.gridStructure) : this.props.gridStructure;
+    },
+//////
     raiseEvent: function(eventHandler, eventArgs) {
         if (eventHandler) {
             eventHandler(this, eventArgs);
