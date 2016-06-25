@@ -15,7 +15,7 @@ namespace ReactDataGrid.Controllers
         public ActionResult Index()
         {
             ItemsController itemsController = new ItemsController();
-            ItemsGridViewModel itemsGridViewModel = itemsController.GetItemsGridViewModel(1, "ID", true, 10, null);
+            ItemsGridViewModel itemsGridViewModel = itemsController.GetItemsGridViewModel(1, "ID", true, 16, null);
             return View(itemsGridViewModel);
         }
 

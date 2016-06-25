@@ -38,7 +38,7 @@ namespace ReactDataGrid.Controllers
             return string.Format("Item {0} Field{1}", item, field);
         }
 
-        public ActionResult Index(int page, string sortBy, bool sortAsc, int itemsOnPage = 10, int? jumpToId = null)
+        public ActionResult Index(int page = 1, string sortBy = "ID", bool sortAsc = true, int itemsOnPage = 16, int? jumpToId = null)
         {
             Thread.Sleep(500);
             return Json(GetItemsGridViewModel(page, sortBy, sortAsc, itemsOnPage , jumpToId ), JsonRequestBehavior.AllowGet);

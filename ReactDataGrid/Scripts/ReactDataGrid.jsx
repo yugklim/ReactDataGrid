@@ -14,12 +14,13 @@ var ReactDataGrid = React.createClass({
     },
 
     getInitialState: function() {
-       _.extend(this.props.defaultLoadParameters, this.props.loadParameters);
-       _.extend(this.props.loadParameters, this.props.defaultLoadParameters);
+        var loadParameters = _.clone(typeof(this.props.loadParameters) === 'string' ? JSON.parse(this.props.loadParameters) : this.props.loadParameters);
+       _.extend(this.props.defaultLoadParameters, loadParameters);
+       _.extend(loadParameters, this.props.defaultLoadParameters);
         return {
             data: this.props.initialData,
-            loadParameters: this.props.loadParameters
-        };
+            loadParameters: loadParameters
+        }
     },
 
     componentWillMount: function() {
@@ -101,7 +102,7 @@ var ReactDataGrid = React.createClass({
         return <tr>
             {
                 this.gridStructure().map(function (val, idx) {
-                    return <th key={idx} dangerouslySetInnerHTML={{__html:  val["Sortable"] === true?sortHeader( val["Header"], val["Field"]) : val["Header"]}}></th>
+                    return <th key={idx} dangerouslySetInnerHTML={{__html: (val["Sortable"] === true || val["Sortable"] === "true")?sortHeader( val["Header"], val["Field"]) : val["Header"]}}></th>
                     })
             }
         </tr>
@@ -183,8 +184,11 @@ var ReactDataGrid = React.createClass({
         this.raiseEvent(this.props.onBeforeLoadData, this.state.loadParameters);
         this.dataLoaded = true;
         this.onLoadStarted();
-        var cloneOfStateLoadParameters = _.clone(this.state.loadParameters);
-        _.extend(cloneOfStateLoadParameters, loadParameters);
+        var cloneOfStateLoadParameters = {};
+        if (this.state.loadParameters) {
+            cloneOfStateLoadParameters = _.clone(this.state.loadParameters);
+        }
+        var x = _.extend(cloneOfStateLoadParameters, loadParameters);
 
         var xhr = new XMLHttpRequest();
         xhr.open('get', this.props.url + '?' + buildQueryString(cloneOfStateLoadParameters), true);

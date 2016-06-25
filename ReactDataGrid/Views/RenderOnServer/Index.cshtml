@@ -14,10 +14,7 @@
             <link rel="stylesheet" type="text/css" href="Styles/ReactDataGridTest.css">
 </head>
 <body>
-    <script src="@Url.Content("~/Scripts/ReactDataGrid.jsx")"></script>
 
-    <script src="@Url.Content("~/Scripts/Tests/TestSorting.jsx")"></script>
-    <script src="@Url.Content("~/Scripts/Tests/TestJumpToId.jsx")"></script>
     <div>
         @Html.LabelFor(m => m.CurrentPage);
         @Html.React("ReactDataGrid", new
@@ -25,22 +22,29 @@
              initialData = Model,
              gridStructure = JsonConvert.SerializeObject(new[]
                 {
-                    new {Header = "Id", Field = "Id", Sortable = "true"},
+                    new {Header = "Id", Field = "Id",         Sortable = "true"},
                     new {Header = "Field0", Field = "Field0", Sortable = "true"},
                     new {Header = "Field1", Field = "Field1", Sortable = "true"}
                 }),
              idfield="Id",
              url="/Items",
+             loadParameters = JsonConvert.SerializeObject(
+                    new { sortAsc = "false", sortBy = "Field0"}
+                   ),
              noDataMessage="No data",
              reactDataGridClass="reactDataGrid",
              tableClass="table table-striped",
-             spinnerClass="spinner"
+             //spinnerClass="spinner"
          })
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
         <script src="http://underscorejs.org/underscore-min.js"></script>
         <script src="@Url.Content("~/Scripts/react.js")"></script>
         <script src="@Url.Content("~/Scripts/react-dom.js")"></script>
+
+        <script src="@Url.Content("~/Scripts/ReactDataGrid.jsx")"></script>
+        <script src="@Url.Content("~/Scripts/Tests/TestSorting.jsx")"></script>
+        <script src="@Url.Content("~/Scripts/Tests/TestJumpToId.jsx")"></script>
 
         @Html.ReactInitJavaScript()
     </div>
