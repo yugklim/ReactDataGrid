@@ -1,8 +1,7 @@
 *.exe
+*.dll
 */bin/
 */obj/
 */.idea/
 */packages/
-*/node_modules/
-*.DotSettings.user
-ReactDataGrid/ReactDataGrid.sln.DotSettings.user
+*/node_modules
