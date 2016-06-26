@@ -91,13 +91,12 @@ var ReactDataGrid = React.createClass({
     },
 
    processHeadersRowFunc: function()  {
-        var sort = this.sort.bind(this);
+        var sort = this.sort;
         var sortBy = this.state.loadParameters.sortBy;
         var sortAsc = this.state.loadParameters.sortAsc;
         return <tr>
             {
                 this.gridStructure().map(function (val, idx) {
-                    //return <th key={idx} dangerouslySetInnerHTML={{__html: (val["Sortable"] === true || val["Sortable"] === "true")?sortHeader( val["Header"], val["Field"]) : val["Header"]}}></th>
                     return <th key={idx}>
                         {(val["Sortable"] === true || val["Sortable"] === "true")?
                         <span onClick={sort} data-sort={val["Field"]} style={{"cursor":"pointer"}}>
@@ -156,6 +155,9 @@ var ReactDataGrid = React.createClass({
         }
         if (!this.props.initialData) {
             this.props.loadData.call(this, {});
+        }
+        else {
+            this.onLoadFinished();
         }
     },
 
