@@ -45,15 +45,15 @@ namespace ReactDataGridTests
             new WebDriverWait(Driver, Timeout).Until(ExpectedConditions.TextToBePresentInElement(firstCell, "1"));
             
             Assert.AreEqual("1", firstCell.Text);
-            Assert.IsNull(Field0Header);
-            Assert.IsNull(Field1Header);
+            Assert.IsNull(Field0Header.GetAttribute("sortBy"));
+            Assert.IsNull(Field1Header.GetAttribute("sortBy"));
 
             IdHeader.Click();
             new WebDriverWait(Driver, Timeout).Until(ExpectedConditions.TextToBePresentInElement(firstCell, "99"));
 
             Assert.AreEqual("99", firstCell.Text);
-            Assert.IsNull(Field0Header);
-            Assert.IsNull(Field1Header);
+            Assert.IsNull(Field0Header.GetAttribute("sortBy"));
+            Assert.IsNull(Field1Header.GetAttribute("sortBy"));
         }
 
         [Test]
@@ -69,15 +69,15 @@ namespace ReactDataGridTests
             new WebDriverWait(Driver, Timeout).Until(ExpectedConditions.TextToBePresentInElement(secondCell, "Item 1 Field0"));
             
             Assert.AreEqual("Item 1 Field0", secondCell.Text);
-            Assert.IsNull(IdHeader);
-            Assert.IsNull(Field1Header);
+            Assert.IsNull(IdHeader.GetAttribute("sortBy"));
+            Assert.IsNull(Field1Header.GetAttribute("sortBy"));
 
             Field0Header.Click();
             new WebDriverWait(Driver, Timeout).Until(ExpectedConditions.TextToBePresentInElement(secondCell, "Item 99 Field0"));
 
             Assert.AreEqual("Item 99 Field0", secondCell.Text);
-            Assert.IsNull(IdHeader);
-            Assert.IsNull(Field1Header);
+            Assert.IsNull(IdHeader.GetAttribute("sortBy"));
+            Assert.IsNull(Field1Header.GetAttribute("sortBy"));
         }
 
         [Test]
@@ -91,15 +91,15 @@ namespace ReactDataGridTests
             new WebDriverWait(Driver, Timeout).Until(ExpectedConditions.TextToBePresentInElement(thirdCell, "Item 1 Field1"));
 
             Assert.AreEqual("Item 1 Field1", thirdCell.Text);
-            Assert.IsNull(IdHeader);
-            Assert.IsNull(Field0Header);
+            Assert.IsNull(IdHeader.GetAttribute("sortBy"));
+            Assert.IsNull(Field0Header.GetAttribute("sortBy"));
 
             Field1Header.Click();
             new WebDriverWait(Driver, Timeout).Until(ExpectedConditions.TextToBePresentInElement(thirdCell, "Item 99 Field1"));
 
             Assert.AreEqual("Item 99 Field1", thirdCell.Text);
-            Assert.IsNull(IdHeader);
-            Assert.IsNull(Field0Header);
+            Assert.IsNull(IdHeader.GetAttribute("sortBy"));
+            Assert.IsNull(Field0Header.GetAttribute("sortBy"));
         }
     }
 }

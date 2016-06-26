@@ -90,22 +90,38 @@ var ReactDataGrid = React.createClass({
         );
     },
 
-    sortHeader: function (header, sortBy) {
-        return '<span onclick="rdcTesting.reactDataGrid.sort(\'' + sortBy + '\')">' + header
-            +((this.state.loadParameters.sortBy === sortBy)?
-                ( this.state.loadParameters.sortAsc?'<span>\u2191</span>' : '<span>\u2193</span>')
-                : "") + '</span>';
-    },
-
-    processHeadersRowFunc: function()  {
-        var sortHeader = this.sortHeader;
+   processHeadersRowFunc: function()  {
+        var sort = this.sort.bind(this);
+        var sortBy = this.state.loadParameters.sortBy;
+        var sortAsc = this.state.loadParameters.sortAsc;
         return <tr>
             {
                 this.gridStructure().map(function (val, idx) {
-                    return <th key={idx} dangerouslySetInnerHTML={{__html: (val["Sortable"] === true || val["Sortable"] === "true")?sortHeader( val["Header"], val["Field"]) : val["Header"]}}></th>
+                    //return <th key={idx} dangerouslySetInnerHTML={{__html: (val["Sortable"] === true || val["Sortable"] === "true")?sortHeader( val["Header"], val["Field"]) : val["Header"]}}></th>
+                    return <th key={idx}>
+                        {(val["Sortable"] === true || val["Sortable"] === "true")?
+                        <span onClick={sort} data-sort={val["Field"]} style={{"cursor":"pointer"}}>
+                            {val["Header"]}
+                            {(sortBy === val["Field"])?(sortAsc?<span>↑</span> : <span>↓</span>) : <span></span>}
+                        </span>
+
+                        :<span>{val["Header"]}</span>}
+                    </th>
                     })
             }
         </tr>
+    },
+
+    sort: function(e) {
+        var sortBy;
+        if (typeof(e) === "object") {
+            sortBy = $(e.currentTarget).attr('data-sort');
+        }
+        else {
+            sortBy = e;
+        }
+        var sortAsc = !this.state.loadParameters.sortAsc;
+        this.props.loadData.call(this, {sortAsc : sortAsc, sortBy : sortBy, page: 1});
     },
 
     processDataRowFunc: function(row, idx) {
@@ -265,11 +281,6 @@ var ReactDataGrid = React.createClass({
         return _.some(this.state.data.Items, function(el) {
             return this.props && this.props.idfield && el[this.props.idfield] === id;
         });
-    },
-
-    sort: function(sortBy) {
-        var sortAsc = !this.state.loadParameters.sortAsc;
-        this.props.loadData.call(this, {sortAsc : sortAsc, sortBy : sortBy, page: 1});
     },
 
     goToPage: function(page) {
