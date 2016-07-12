@@ -322,7 +322,12 @@ var ReactDataGrid = React.createClass({
 //////
     raiseEvent: function(eventHandler, eventArgs) {
         if (eventHandler) {
-            eventHandler(this, eventArgs);
+            if (typeof(eventHandler) === 'string') {
+                eval(eventHandler(this, eventArgs));
+            }
+            else {
+                eventHandler(this, eventArgs);
+            }
         }
     }
 });
