@@ -136,6 +136,19 @@ function loadViaJquery(loadParameters) {
 
         document.getElementById('content')
     );
+
+    //rdcTesting.reactDataGrid = ReactDOM.render(
+    //    <ReactDataGrid
+    //        url='/Items'
+    //        gridStructure={[{Header: 'Id', Field: 'Id', Sortable: false},{Header: 'Field0', Field: 'Field0', Sortable: true}, {Header: 'Field1', Field: 'Field1'}]}
+    //        idfield='Id'
+    //        noDataMessage='No data'
+    //        reactDataGridClass='reactDataGrid'
+    //        tableClass='table table-striped'
+    //        spinnerClass='spinner'
+    //    />,
+    //    document.getElementById('content')
+    //);
 // http://reactjs.net/getting-started/tutorial.html
 //rdcTesting.rerender = function() {
 //    rdcTesting.reactDataGrid = ReactDOM.render(

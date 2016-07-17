@@ -9,7 +9,8 @@ var ReactDataGrid = React.createClass({
             loadErrorHandler :  this.prototype.loadErrorHandler,
             processDataRowFunc : this.prototype.processDataRowFunc,
             processHeadersRowFunc : this.prototype.processHeadersRowFunc,
-            onRowClicked: this.prototype.onRowClicked
+            onRowClicked: this.prototype.onRowClicked,
+            multiSelection: false
         }
     },
 
@@ -134,22 +135,56 @@ var ReactDataGrid = React.createClass({
     },
 
     onRowClicked: function (e) {
-        this.currentId = $(e.currentTarget).attr('id');
-        this.highlightSelectedRow(e.currentTarget);
+        this.processRowClicked(e.currentTarget);
+        //var clickedId = $(e.currentTarget).attr('id');
+        //this.currentId = clickedId;
+        //if (this.props.multiSelection) {
+        //    if (_.contains(this.selectedIds, clickedId)){
+        //        this.selectedIds = _.without(this.selectedIds, clickedId);
+        //    }
+        //    else{
+        //        this.selectedIds.push(clickedId);
+        //    }
+        //}
+        //
+        //this.highlightSelectedRow(e.currentTarget);
+    },
+
+    processRowClicked: function(row) {
+        var clickedId = $(row).attr('id');
+        this.currentId = clickedId;
+        if (this.props.multiSelection) {
+            if (_.contains(this.selectedIds, clickedId)){
+                this.selectedIds = _.without(this.selectedIds, clickedId);
+            }
+            else{
+                this.selectedIds.push(clickedId);
+            }
+        }
+        this.highlightSelectedRow(row);
     },
 
     highlightSelectedRow: function(row) {
-        if (this.currentRow) {
-            $(this.currentRow).toggleClass("selected");
+        if (this.props.multiSelection){
+            if (row) {
+                this.currentRow = row;
+                $(this.currentRow).toggleClass("selected");
+            }
         }
+        else {
+            if (this.currentRow) {
+                $(this.currentRow).toggleClass("selected");
+            }
 
-        if (row) {
-            this.currentRow = row;
-            $(this.currentRow).toggleClass("selected");
+            if (row) {
+                this.currentRow = row;
+                $(this.currentRow).toggleClass("selected");
+            }
         }
     },
 
     componentDidMount: function() {
+        this.selectedIds = [];
         if (this.props.noLoadOnDidMount && this.props.noLoadOnDidMount === "true") {
             return;
         }
@@ -272,7 +307,8 @@ var ReactDataGrid = React.createClass({
         }
 
         var row = this.refs["row" + this.currentId];
-        this.highlightSelectedRow(row);
+        this.processRowClicked(row);
+        //this.highlightSelectedRow(row);
     },
 
     isIdInData: function(id) {
