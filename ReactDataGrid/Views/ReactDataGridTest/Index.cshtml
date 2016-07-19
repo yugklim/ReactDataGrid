@@ -20,10 +20,12 @@
     </head>
     <body>
         <div id="content"></div>
+        <div id="content2"></div>
         <script src="@Url.Content("~/Scripts/ReactDataGrid.jsx")"></script>
         <script src="@Url.Content("~/Scripts/ReactDataGridTester.jsx")"></script>
         <script src="@Url.Content("~/Scripts/Tests/TestSorting.jsx")"></script>
         <script src="@Url.Content("~/Scripts/Tests/TestJumpToId.jsx")"></script>
+        <script src="@Url.Content("~/Scripts/Tests/TestMultiselect.jsx")"></script>
         <br/>
         <input type="button" value="Go to page 2" id="goTo2NdPageButton" onclick="rdcTesting.reactDataGrid.loadData({ page: 2 })"/>
         <input type="button" value="Go to page -999" id="goTo-999PageButton" onclick="rdcTesting.reactDataGrid.loadData({ page: -999 })"/>

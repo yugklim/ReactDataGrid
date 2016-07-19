@@ -191,6 +191,7 @@
     <Content Include="Scripts\Tests\TestSorting.jsx" />
     <Content Include="Scripts\Tests\TestJumpToId.jsx" />
     <Content Include="Views\RenderOnServer\Index.cshtml" />
+    <Content Include="Scripts\Tests\TestMultiselect.jsx" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

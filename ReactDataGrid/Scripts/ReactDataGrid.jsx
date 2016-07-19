@@ -126,7 +126,7 @@ var ReactDataGrid = React.createClass({
 
     processDataRowFunc: function(row, idx) {
         var onRowClicked = this.props.onRowClicked.bind(this);
-        var tr = <tr ref={"row" + row['Id']}  key={idx} id={row['Id']} onClick={onRowClicked} style={{"cursor":"pointer"}}>
+        var tr = <tr ref={"row" + row[this.props.idfield]}  key={idx} id={row[this.props.idfield]} onClick={onRowClicked} style={{"cursor":"pointer"}}>
             {
                 this.gridStructure().map(function (val, idx) {return <td key={idx}>{row[val["Field"]]}</td>})
             }
@@ -153,7 +153,7 @@ var ReactDataGrid = React.createClass({
     processRowClicked: function(row) {
         var clickedId = $(row).attr('id');
         this.currentId = clickedId;
-        if (this.props.multiSelection) {
+        if (this.multiSelection()) {
             if (_.contains(this.selectedIds, clickedId)){
                 this.selectedIds = _.without(this.selectedIds, clickedId);
             }
@@ -165,7 +165,7 @@ var ReactDataGrid = React.createClass({
     },
 
     highlightSelectedRow: function(row) {
-        if (this.props.multiSelection){
+        if (this.multiSelection()){
             if (row) {
                 this.currentRow = row;
                 $(this.currentRow).toggleClass("selected");
@@ -256,7 +256,6 @@ var ReactDataGrid = React.createClass({
                     data: data,
                     loadParameters: cloneOfStateLoadParameters
                 });
-
                 this.tryToJumpToId();
                 this.raiseEvent(this.props.onDataLoadedOK, this.state.loadParameters);
             }
@@ -351,9 +350,19 @@ var ReactDataGrid = React.createClass({
     goToLastPage: function() {
         this.goToPage(this.state.data.NOfPages);
     },
-//////
+////// properties:
+    parseProperty: function(prop){
+        return typeof(prop) === 'string' ? JSON.parse(prop) : prop;
+    },
+
     gridStructure: function() {
-        return typeof(this.props.gridStructure) === 'string' ? JSON.parse(this.props.gridStructure) : this.props.gridStructure;
+        return this.parseProperty(this.props.gridStructure);
+        //typeof(this.props.gridStructure) === 'string' ? JSON.parse(this.props.gridStructure) : this.props.gridStructure;
+    },
+
+    multiSelection: function() {
+        return this.parseProperty(this.props.multiSelection);
+        //return typeof(this.props.multiSelection) === 'string' ? JSON.parse(this.props.multiSelection) : this.props.multiSelection;
     },
 //////
     raiseEvent: function(eventHandler, eventArgs) {
