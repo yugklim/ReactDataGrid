@@ -10,6 +10,7 @@ var ReactDataGrid = React.createClass({
             processDataRowFunc : this.prototype.processDataRowFunc,
             processHeadersRowFunc : this.prototype.processHeadersRowFunc,
             onRowClicked: this.prototype.onRowClicked,
+            rowClickOuterHandler: null,
             multiSelection: false
         }
     },
@@ -136,18 +137,7 @@ var ReactDataGrid = React.createClass({
 
     onRowClicked: function (e) {
         this.processRowClicked(e.currentTarget);
-        //var clickedId = $(e.currentTarget).attr('id');
-        //this.currentId = clickedId;
-        //if (this.props.multiSelection) {
-        //    if (_.contains(this.selectedIds, clickedId)){
-        //        this.selectedIds = _.without(this.selectedIds, clickedId);
-        //    }
-        //    else{
-        //        this.selectedIds.push(clickedId);
-        //    }
-        //}
-        //
-        //this.highlightSelectedRow(e.currentTarget);
+        this.raiseEvent(eval(this.props.rowClickOuterHandler), this.selectedIds);
     },
 
     processRowClicked: function(row) {
