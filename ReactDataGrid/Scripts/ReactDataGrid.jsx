@@ -184,6 +184,8 @@ var ReactDataGrid = React.createClass({
         else {
             this.onLoadFinished();
         }
+
+        this.tryToJumpToId();
     },
 
 // end of instantiation methods
