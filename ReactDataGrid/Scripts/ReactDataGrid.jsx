@@ -298,8 +298,22 @@ var ReactDataGrid = React.createClass({
         }
 
         var row = this.refs["row" + this.currentId];
-        this.processRowClicked(row);
-        //this.highlightSelectedRow(row);
+
+        if(this.currentRow) {
+            $(this.currentRow).removeClass("selected");
+        }
+        this.currentRow = row;
+        $(this.currentRow).addClass("selected");
+
+        if (this.multiSelection()) {
+            if (_.contains(this.selectedIds, this.currentId)){
+                this.selectedIds = _.without(this.selectedIds, this.currentId);
+            }
+            else{
+                this.selectedIds.push(this.currentId);
+            }
+        }
+
     },
 
     isIdInData: function(id) {
@@ -349,12 +363,10 @@ var ReactDataGrid = React.createClass({
 
     gridStructure: function() {
         return this.parseProperty(this.props.gridStructure);
-        //typeof(this.props.gridStructure) === 'string' ? JSON.parse(this.props.gridStructure) : this.props.gridStructure;
     },
 
     multiSelection: function() {
         return this.parseProperty(this.props.multiSelection);
-        //return typeof(this.props.multiSelection) === 'string' ? JSON.parse(this.props.multiSelection) : this.props.multiSelection;
     },
 //////
     raiseEvent: function(eventHandler, eventArgs) {
