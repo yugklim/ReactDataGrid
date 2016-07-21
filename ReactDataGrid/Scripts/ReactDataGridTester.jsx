@@ -38,7 +38,7 @@ function dataRowTemplate(row, idx) {
 
 function onRowClicked (e) {
         rdcTesting.reactDataGrid.jumpToId = $(e.currentTarget).attr('id');
-        rdcTesting.reactDataGrid.highlightSelectedRow(e.currentTarget);
+        rdcTesting.reactDataGrid.toggleSelectedRow(e.currentTarget);
 };
 
 function ownLoadErrorHandler (xMLHttpRequest) {

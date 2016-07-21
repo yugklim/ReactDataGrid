@@ -141,7 +141,7 @@ var ReactDataGrid = React.createClass({
     },
 
     processRowClicked: function(row) {
-        var clickedId = $(row).attr('id');
+        var clickedId = parseInt($(row).attr('id'));
         this.currentId = clickedId;
         if (this.multiSelection()) {
             if (_.contains(this.selectedIds, clickedId)){
@@ -151,30 +151,23 @@ var ReactDataGrid = React.createClass({
                 this.selectedIds.push(clickedId);
             }
         }
-        this.highlightSelectedRow(row);
+        this.toggleSelectedRow(row);
     },
 
-    highlightSelectedRow: function(row) {
-        if (this.multiSelection()){
-            if (row) {
-                this.currentRow = row;
-                $(this.currentRow).toggleClass("selected");
-            }
-        }
-        else {
+    toggleSelectedRow: function(row) {
+        if (!this.multiSelection()) {
             if (this.currentRow) {
                 $(this.currentRow).toggleClass("selected");
             }
-
-            if (row) {
-                this.currentRow = row;
-                $(this.currentRow).toggleClass("selected");
-            }
+        }
+        if (row) {
+            this.currentRow = row;
+            $(this.currentRow).toggleClass("selected");
         }
     },
 
     componentDidMount: function() {
-        this.selectedIds = [];
+        this.cleanSelectedIds();
         if (this.props.noLoadOnDidMount && this.props.noLoadOnDidMount === "true") {
             return;
         }
@@ -184,7 +177,6 @@ var ReactDataGrid = React.createClass({
         else {
             this.onLoadFinished();
         }
-
         this.tryToJumpToId();
     },
 
@@ -226,6 +218,7 @@ var ReactDataGrid = React.createClass({
             return retVal;
         };
 
+        this.cleanSelectedIds();
         this.raiseEvent(this.props.onBeforeLoadData, this.state.loadParameters);
         this.dataLoaded = true;
         this.onLoadStarted();
@@ -355,6 +348,10 @@ var ReactDataGrid = React.createClass({
 
     goToLastPage: function() {
         this.goToPage(this.state.data.NOfPages);
+    },
+
+    cleanSelectedIds: function() {
+        this.selectedIds = [];
     },
 ////// properties:
     parseProperty: function(prop){
