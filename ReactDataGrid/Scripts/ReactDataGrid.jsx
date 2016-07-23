@@ -178,6 +178,7 @@ var ReactDataGrid = React.createClass({
             this.onLoadFinished();
         }
         this.tryToJumpToId();
+        this.raiseEvent(this.props.onDidMount, this)
     },
 
 // end of instantiation methods
@@ -369,7 +370,7 @@ var ReactDataGrid = React.createClass({
     raiseEvent: function(eventHandler, eventArgs) {
         if (eventHandler) {
             if (typeof(eventHandler) === 'string') {
-                eval(eventHandler(this, eventArgs));
+                eval(eventHandler)(this, eventArgs);
             }
             else {
                 eventHandler(this, eventArgs);
