@@ -9,7 +9,9 @@ var ReactDataGrid = React.createClass({
             loadErrorHandler :  this.prototype.loadErrorHandler,
             processDataRowFunc : this.prototype.processDataRowFunc,
             processHeadersRowFunc : this.prototype.processHeadersRowFunc,
-            onRowClicked: this.prototype.onRowClicked
+            onRowClicked: this.prototype.onRowClicked,
+            rowClickOuterHandler: null,
+            multiSelection: false
         }
     },
 
@@ -27,7 +29,7 @@ var ReactDataGrid = React.createClass({
     },
 
     render: function() {
-        var processDataRowFunc = this.props.processDataRowFunc.bind(this);
+        var processDataRowFunc = eval(this.props.processDataRowFunc).bind(this);
         var processHeadersRowFunc = this.props.processHeadersRowFunc.bind(this);
         var isNoData = !this.state.data || !this.state.data.Items || this.state.data.Items.length === 0;
         var noDataMessage = (this.dataLoaded === true && isNoData) ? this.props.noDataMessage : "";
@@ -125,7 +127,7 @@ var ReactDataGrid = React.createClass({
 
     processDataRowFunc: function(row, idx) {
         var onRowClicked = this.props.onRowClicked.bind(this);
-        var tr = <tr ref={"row" + row['Id']}  key={idx} id={row['Id']} onClick={onRowClicked} style={{"cursor":"pointer"}}>
+        var tr = <tr ref={"row" + row[this.props.idfield]}  key={idx} id={row[this.props.idfield]} onClick={onRowClicked} style={{"cursor":"pointer"}}>
             {
                 this.gridStructure().map(function (val, idx) {return <td key={idx}>{row[val["Field"]]}</td>})
             }
@@ -134,15 +136,30 @@ var ReactDataGrid = React.createClass({
     },
 
     onRowClicked: function (e) {
-        this.currentId = $(e.currentTarget).attr('id');
-        this.highlightSelectedRow(e.currentTarget);
+        this.processRowClicked(e.currentTarget);
+        this.raiseEvent(eval(this.props.rowClickOuterHandler), this.selectedIds);
     },
 
-    highlightSelectedRow: function(row) {
-        if (this.currentRow) {
-            $(this.currentRow).toggleClass("selected");
+    processRowClicked: function(row) {
+        var clickedId = parseInt($(row).attr('id'));
+        this.currentId = clickedId;
+        if (this.multiSelection()) {
+            if (_.contains(this.selectedIds, clickedId)){
+                this.selectedIds = _.without(this.selectedIds, clickedId);
+            }
+            else{
+                this.selectedIds.push(clickedId);
+            }
         }
+        this.toggleSelectedRow(row);
+    },
 
+    toggleSelectedRow: function(row) {
+        if (!this.multiSelection()) {
+            if (this.currentRow) {
+                $(this.currentRow).toggleClass("selected");
+            }
+        }
         if (row) {
             this.currentRow = row;
             $(this.currentRow).toggleClass("selected");
@@ -150,6 +167,7 @@ var ReactDataGrid = React.createClass({
     },
 
     componentDidMount: function() {
+        this.cleanSelectedIds();
         if (this.props.noLoadOnDidMount && this.props.noLoadOnDidMount === "true") {
             return;
         }
@@ -159,6 +177,8 @@ var ReactDataGrid = React.createClass({
         else {
             this.onLoadFinished();
         }
+        this.tryToJumpToId();
+        this.raiseEvent(this.props.onDidMount, this)
     },
 
 // end of instantiation methods
@@ -199,6 +219,7 @@ var ReactDataGrid = React.createClass({
             return retVal;
         };
 
+        this.cleanSelectedIds();
         this.raiseEvent(this.props.onBeforeLoadData, this.state.loadParameters);
         this.dataLoaded = true;
         this.onLoadStarted();
@@ -221,7 +242,6 @@ var ReactDataGrid = React.createClass({
                     data: data,
                     loadParameters: cloneOfStateLoadParameters
                 });
-
                 this.tryToJumpToId();
                 this.raiseEvent(this.props.onDataLoadedOK, this.state.loadParameters);
             }
@@ -272,7 +292,22 @@ var ReactDataGrid = React.createClass({
         }
 
         var row = this.refs["row" + this.currentId];
-        this.highlightSelectedRow(row);
+
+        if(this.currentRow) {
+            $(this.currentRow).removeClass("selected");
+        }
+        this.currentRow = row;
+        $(this.currentRow).addClass("selected");
+
+        if (this.multiSelection()) {
+            if (_.contains(this.selectedIds, this.currentId)){
+                this.selectedIds = _.without(this.selectedIds, this.currentId);
+            }
+            else{
+                this.selectedIds.push(this.currentId);
+            }
+        }
+
     },
 
     isIdInData: function(id) {
@@ -315,14 +350,31 @@ var ReactDataGrid = React.createClass({
     goToLastPage: function() {
         this.goToPage(this.state.data.NOfPages);
     },
-//////
+
+    cleanSelectedIds: function() {
+        this.selectedIds = [];
+    },
+////// properties:
+    parseProperty: function(prop){
+        return typeof(prop) === 'string' ? JSON.parse(prop) : prop;
+    },
+
     gridStructure: function() {
-        return typeof(this.props.gridStructure) === 'string' ? JSON.parse(this.props.gridStructure) : this.props.gridStructure;
+        return this.parseProperty(this.props.gridStructure);
+    },
+
+    multiSelection: function() {
+        return this.parseProperty(this.props.multiSelection);
     },
 //////
     raiseEvent: function(eventHandler, eventArgs) {
         if (eventHandler) {
-            eventHandler(this, eventArgs);
+            if (typeof(eventHandler) === 'string') {
+                eval(eventHandler)(this, eventArgs);
+            }
+            else {
+                eventHandler(this, eventArgs);
+            }
         }
     }
 });

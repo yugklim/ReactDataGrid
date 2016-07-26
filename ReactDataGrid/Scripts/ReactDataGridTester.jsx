@@ -38,7 +38,7 @@ function dataRowTemplate(row, idx) {
 
 function onRowClicked (e) {
         rdcTesting.reactDataGrid.jumpToId = $(e.currentTarget).attr('id');
-        rdcTesting.reactDataGrid.highlightSelectedRow(e.currentTarget);
+        rdcTesting.reactDataGrid.toggleSelectedRow(e.currentTarget);
 };
 
 function ownLoadErrorHandler (xMLHttpRequest) {
@@ -136,6 +136,23 @@ function loadViaJquery(loadParameters) {
 
         document.getElementById('content')
     );
+
+    //rdcTesting.reactDataGrid2 = ReactDOM.render(
+    //    <ReactDataGrid
+    //        url='/Items'
+    //        gridStructure={[{Header: 'Id', Field: 'Id', Sortable: false},{Header: 'Field0', Field: 'Field0', Sortable: true}, {Header: 'Field1', Field: 'Field1'}]}
+    //        idfield='Id'
+    //        noDataMessage='No data'
+    //        reactDataGridClass='reactDataGrid'
+    //        tableClass='table table-striped'
+    //        spinnerClass='spinner'
+    //        multiSelection={true}
+    //        loadParameters={{"sortAsc" : true, "sortBy": "Field0", "jumpToId": null}}
+    //    />,
+    //    document.getElementById('content2')
+    //);
+
+    //rdcTesting.reactDataGrid2.loadData({"sortAsc" : true, "sortBy": "Field0", "jumpToId": null});
 // http://reactjs.net/getting-started/tutorial.html
 //rdcTesting.rerender = function() {
 //    rdcTesting.reactDataGrid = ReactDOM.render(

@@ -27,7 +27,7 @@ namespace ReactDataGridTests
         [Test]
         public void Are_Rows_Selectable_OnAllPages()
         {
-            Driver.Manage().Timeouts().ImplicitlyWait(new TimeSpan(0, 0, 15));
+            Driver.Manage().Timeouts().ImplicitlyWait(new TimeSpan(0, 0, 25));
             Are_Rows_Selectable_OnTheCurrentPage(1);
 
             for (int page = 2; page <= 7; page++)
