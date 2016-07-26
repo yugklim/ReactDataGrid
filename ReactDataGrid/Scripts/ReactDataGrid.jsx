@@ -29,7 +29,7 @@ var ReactDataGrid = React.createClass({
     },
 
     render: function() {
-        var processDataRowFunc = this.props.processDataRowFunc.bind(this);
+        var processDataRowFunc = eval(this.props.processDataRowFunc).bind(this);
         var processHeadersRowFunc = this.props.processHeadersRowFunc.bind(this);
         var isNoData = !this.state.data || !this.state.data.Items || this.state.data.Items.length === 0;
         var noDataMessage = (this.dataLoaded === true && isNoData) ? this.props.noDataMessage : "";
